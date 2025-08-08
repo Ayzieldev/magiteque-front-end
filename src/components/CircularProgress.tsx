@@ -11,8 +11,8 @@ interface CircularProgressProps {
 
 const CircularProgress: React.FC<CircularProgressProps> = ({
   percentage,
-  size = 120,
-  strokeWidth = 8,
+  size = 250,
+  strokeWidth = 12,
   color = '#12b695',
   label,
   status
@@ -47,6 +47,19 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   // Convert status to CSS class format (lowercase with hyphens)
   const statusClass = status.toLowerCase().replace(/\s+/g, '-');
 
+  // choose color based on status
+  const getStatusColor = (): string => {
+    const s = status.toLowerCase();
+    if (s.includes('extremely')) return '#7f1d1d';
+    if (s.includes('severe')) return '#ef4444';
+    if (s.includes('moderate')) return '#f97316';
+    if (s.includes('mild')) return '#f59e0b';
+    if (s.includes('normal')) return '#10b981';
+    return color;
+  };
+
+  const ringColor = getStatusColor();
+
   return (
     <div className="circular-progress-container">
       <svg
@@ -71,7 +84,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
            cy={size / 2}
            r={radius}
            fill="none"
-           stroke="#12b695"
+           stroke={ringColor}
            strokeWidth={strokeWidth}
            strokeLinecap="round"
            strokeDasharray={strokeDasharray}
@@ -85,8 +98,8 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
       </svg>
       
       {/* Percentage text */}
-      <div className="progress-text">
-        <span className="percentage">{animatedPercentage}%</span>
+      <div className="progress-text" aria-hidden="false" role="img" aria-label={`${label} ${animatedPercentage} percent`}>
+        <span className="percentage" aria-live="polite">{animatedPercentage}%</span>
         <span className="label">{label}</span>
         <span className={`status status-${statusClass}`}>{status}</span>
       </div>

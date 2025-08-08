@@ -110,7 +110,7 @@
 }
 
 .assessment-container {
-  max-width: 600px;
+  max-width: 900px;
   width: 100%;
   margin: 0 auto;
 }
@@ -219,6 +219,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
+      user-select: none;
       
       &:hover {
         background: rgba($primary-green, 0.2);
@@ -231,6 +232,7 @@
         height: 20px;
         margin-right: $spacing-md;
         accent-color: $primary-green;
+        pointer-events: none;
       }
       
       .option-text {
@@ -239,6 +241,8 @@
         color: $primary-green;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        pointer-events: none;
+        flex: 1;
       }
       
       &:has(input[type="radio"]:checked),

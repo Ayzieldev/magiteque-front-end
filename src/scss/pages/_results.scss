@@ -3,17 +3,24 @@
 
 .results-screen {
   min-height: 100vh;
-  background: linear-gradient(135deg, lighten($primary-green, 45%) 0%, lighten($primary-green, 25%) 50%, $primary-green 100%);
+  // Use the same soft radial background as the start screen
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    lighten($primary-green, 55%) 0%,
+    lighten($primary-green, 40%) 20%,
+    lighten($primary-green, 30%) 30%,
+    lighten($muted-green, 15%) 200%
+  );
   position: relative;
   overflow: hidden;
-  padding: $spacing-xl;
+  padding: $spacing-3xl; // add generous padding around the page
   display: flex;
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.8s ease-out;
   
   @include mobile {
-    padding: $spacing-lg;
+    padding: $spacing-xl;
   }
 }
 
@@ -27,7 +34,7 @@
   }
   
   .results-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     background: $white;
     border-radius: 24px;
@@ -38,6 +45,7 @@
     
     @include mobile {
       border-radius: 20px;
+      max-width: 95vw;
     }
   }
   
@@ -55,7 +63,6 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0,20 Q25,10 50,20 T100,20 L100,0 L0,0 Z' fill='%2312b695'/%3E%3C/svg%3E");
       background-size: 100% 100%;
       background-repeat: no-repeat;
       background-position: bottom;
@@ -100,18 +107,19 @@
   
   .results-metrics {
     display: flex !important;
+    flex-wrap: wrap;
     flex-direction: row !important;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: $spacing-xl;
-    padding: $spacing-2xl;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-3xl;
+    padding: $spacing-3xl;
     margin-bottom: $spacing-xl;
     width: 100%;
     
     @include mobile {
       flex-direction: column !important;
-      gap: $spacing-xl;
-      padding: $spacing-xl;
+      gap: $spacing-2xl;
+      padding: $spacing-2xl;
     }
   }
     
@@ -122,12 +130,13 @@
     border-radius: $border-radius-lg;
     border: none;
     transition: all 0.3s ease;
-    flex: 1 1 0;
+    flex: 0 1 auto;
     min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 360px;
     
     &:nth-child(1) {
       animation: slideUp 0.6s ease-out 0.2s both;

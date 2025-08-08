@@ -101,7 +101,7 @@ function App() {
     const results = calculateResults(answers);
     return (
       <>
-        <div className="App results-screen">
+        <div className="App results-screen results-page">
           <div className="results-container">
             <div className="results-header">
               <h1 className="results-title">Your Assessment Results</h1>
