@@ -97,7 +97,7 @@ export function AudioProvider({ children }: Props) {
         bgAudioRef.current = null;
       }
     };
-  }, []);
+  }, [backgroundVolume, ensureStarted]);
 
   const toggleMute = () => {
     setIsMuted((prev) => {
@@ -158,7 +158,7 @@ export function AudioProvider({ children }: Props) {
       backgroundVolume,
       sfxVolume
     }),
-    [isMuted, backgroundVolume, sfxVolume]
+    [isMuted, backgroundVolume, sfxVolume, ensureStarted, playClick, playAnswerClick]
   );
 
   return <AudioCtx.Provider value={value}>{children}</AudioCtx.Provider>;
