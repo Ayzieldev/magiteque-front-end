@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useCallback } from 'react';
 
 type AudioContextValue = {
   isMuted: boolean;
@@ -59,6 +59,17 @@ export function AudioProvider({ children }: Props) {
     return null;
   };
 
+  const ensureStarted = useCallback(() => {
+    if (hasStartedRef.current) return;
+    const bg = bgAudioRef.current;
+    if (!bg) return;
+    bg.muted = isMuted;
+    bg.play().catch(() => {
+      // Autoplay blocked until user gesture; will retry on next interaction
+    });
+    hasStartedRef.current = true;
+  }, [isMuted]);
+
   useEffect(() => {
     let disposed = false;
     (async () => {
@@ -108,43 +119,32 @@ export function AudioProvider({ children }: Props) {
     });
   };
 
-  const ensureStarted = () => {
-    if (hasStartedRef.current) return;
-    const bg = bgAudioRef.current;
-    if (!bg) return;
-    bg.muted = isMuted;
-    bg.play().catch(() => {
-      // Autoplay blocked until user gesture; will retry on next interaction
-    });
-    hasStartedRef.current = true;
-  };
-
-  const playClick = () => {
+  const playClick = useCallback(() => {
     if (isMuted) return;
     const src = clickSrcRef.current;
     if (!src) return;
     const a = new Audio(src);
     a.volume = sfxVolume;
     a.play().catch(() => {});
-  };
+  }, [isMuted, sfxVolume]);
 
-  const playAnswerClick = () => {
+  const playAnswerClick = useCallback(() => {
     if (isMuted) return;
     const a = new Audio('/audio/click-sound-2.mp3');
     a.volume = sfxVolume;
     a.play().catch(() => {});
-  };
+  }, [isMuted, sfxVolume]);
 
-  const updateBackgroundVolume = (volume: number) => {
+  const updateBackgroundVolume = useCallback((volume: number) => {
     setBackgroundVolume(volume);
     if (bgAudioRef.current) {
       bgAudioRef.current.volume = volume;
     }
-  };
+  }, []);
 
-  const updateSfxVolume = (volume: number) => {
+  const updateSfxVolume = useCallback((volume: number) => {
     setSfxVolume(volume);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({ 
