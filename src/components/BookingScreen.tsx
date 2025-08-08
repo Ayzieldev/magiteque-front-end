@@ -49,9 +49,10 @@ const TIME_SLOTS = [
 interface BookingScreenProps {
   onBack: () => void;
   onBookingComplete: (booking: BookingForm) => void;
+  onEmailTrigger?: (bookingData: any) => void;
 }
 
-const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete }) => {
+const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete, onEmailTrigger }) => {
   const [currentStep, setCurrentStep] = useState<'service' | 'details' | 'confirmation'>('service');
   const [bookingForm, setBookingForm] = useState<BookingForm>({
     name: '',
@@ -292,7 +293,7 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete
           </div>
         )}
 
-        {currentStep === 'confirmation' && (
+                {currentStep === 'confirmation' && (
           <div className="booking-confirmation">
             <div className="confirmation-icon">✅</div>
             <h2>Booking Confirmed!</h2>
@@ -315,12 +316,21 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete
                 <strong>Email:</strong> {bookingForm.email}
               </div>
             </div>
-                         <button className="btn btn--primary" onClick={() => {
-               onBookingComplete(bookingForm);
-               onBack();
-             }}>
-               Return to Assessment
-             </button>
+            <button className="btn btn--primary" onClick={() => {
+              // Trigger email sending with booking data
+              if (onEmailTrigger) {
+                onEmailTrigger({
+                  ...bookingForm,
+                  service: bookingForm.selectedService?.name,
+                  date: bookingForm.selectedDate,
+                  time: bookingForm.selectedTime
+                });
+              }
+              onBookingComplete(bookingForm);
+              onBack();
+            }}>
+              Return to Assessment
+            </button>
           </div>
         )}
       </div>

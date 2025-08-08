@@ -21,8 +21,8 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   const circleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
-    const duration = 2000; // 2 seconds
-    const steps = 60;
+    const duration = 4000; // 4 seconds (slower)
+    const steps = 80; // More steps for smoother animation
     const increment = percentage / steps;
     let currentStep = 0;
 
@@ -58,7 +58,55 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
     return color;
   };
 
-  const ringColor = getStatusColor();
+  // Calculate color based on animation progress
+  const getAnimatedColor = (): string => {
+    const progress = animatedPercentage / percentage;
+    const finalColor = getStatusColor();
+    
+    // Start with green and transition to the final color
+    const startColor = '#10b981'; // Green
+    const endColor = finalColor;
+    
+    if (progress <= 0.3) {
+      // First 30%: Green to Yellow
+      const ratio = progress / 0.3;
+      return interpolateColor(startColor, '#f59e0b', ratio);
+    } else if (progress <= 0.6) {
+      // 30% to 60%: Yellow to Orange
+      const ratio = (progress - 0.3) / 0.3;
+      return interpolateColor('#f59e0b', '#f97316', ratio);
+    } else if (progress <= 0.8) {
+      // 60% to 80%: Orange to Red
+      const ratio = (progress - 0.6) / 0.2;
+      return interpolateColor('#f97316', '#ef4444', ratio);
+    } else {
+      // 80% to 100%: Red to final color
+      const ratio = (progress - 0.8) / 0.2;
+      return interpolateColor('#ef4444', endColor, ratio);
+    }
+  };
+
+  // Helper function to interpolate between two colors
+  const interpolateColor = (color1: string, color2: string, ratio: number): string => {
+    const hex1 = color1.replace('#', '');
+    const hex2 = color2.replace('#', '');
+    
+    const r1 = parseInt(hex1.substr(0, 2), 16);
+    const g1 = parseInt(hex1.substr(2, 2), 16);
+    const b1 = parseInt(hex1.substr(4, 2), 16);
+    
+    const r2 = parseInt(hex2.substr(0, 2), 16);
+    const g2 = parseInt(hex2.substr(2, 2), 16);
+    const b2 = parseInt(hex2.substr(4, 2), 16);
+    
+    const r = Math.round(r1 + (r2 - r1) * ratio);
+    const g = Math.round(g1 + (g2 - g1) * ratio);
+    const b = Math.round(b1 + (b2 - b1) * ratio);
+    
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  };
+
+  const ringColor = getAnimatedColor();
 
   return (
     <div className="circular-progress-container">

@@ -14,6 +14,8 @@ function App() {
   const [currentLevel, setCurrentLevel] = useState(1);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
+  const [assessmentResults, setAssessmentResults] = useState<any>(null);
+  const [adminEmail] = useState('admin@magirque.com'); // Configure your admin email here
 
   const currentQuestion = QUESTIONS[currentQuestionIndex];
   const totalQuestions = QUESTIONS.length;
@@ -47,6 +49,21 @@ function App() {
 
     // Check if this is the last question
     if (currentQuestionIndex >= totalQuestions - 1) {
+      // Calculate results
+      const results = calculateResults(updatedAnswers);
+      setAssessmentResults({
+        ...results,
+        answers: updatedAnswers.map(answer => {
+          const question = QUESTIONS.find(q => q.id === answer.questionId);
+          return {
+            question: question?.text || '',
+            answer: answer.selectedOption,
+            level: question?.level || 1,
+            category: question?.category || 'General'
+          };
+        })
+      });
+      
       // Show results
       setShowResults(true);
       setShowAssessment(false);
@@ -116,6 +133,118 @@ function App() {
     setShowResults(true);
   };
 
+  const handleEmailTrigger = (bookingData: any) => {
+    // Automatically send assessment results with booking info
+    if (assessmentResults) {
+      const resultsWithBooking = {
+        ...assessmentResults,
+        bookingInfo: {
+          service: bookingData.service,
+          date: bookingData.date,
+          time: bookingData.time
+        }
+      };
+      
+      // Simulate email sending
+      console.log('📧 AUTO-TRIGGERING EMAIL AFTER BOOKING CONFIRMATION');
+      console.log('='.repeat(60));
+      console.log('🎯 TRIGGER: User confirmed booking');
+      console.log('📋 BOOKING DATA:', bookingData);
+      console.log('📊 ASSESSMENT RESULTS:', assessmentResults);
+      console.log('='.repeat(60));
+      
+      // Call the email sending function
+      sendAssessmentResults(resultsWithBooking);
+    }
+  };
+
+  const sendAssessmentResults = async (results: any) => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Detailed console logging for email content
+    console.log('📧 EMAIL SYSTEM - SENDING ASSESSMENT RESULTS');
+    console.log('='.repeat(60));
+    
+    // Admin Email Content
+    console.log('📤 TO ADMIN EMAIL:', adminEmail);
+    console.log('📋 ADMIN EMAIL CONTENT:');
+    console.log('Subject: New Assessment Results - Complete Data');
+    console.log('From: noreply@magirque.com');
+    console.log('To:', adminEmail);
+    console.log('');
+    console.log('📊 COMPLETE ASSESSMENT DATA:');
+    console.log('User Name:', results.userName || 'Anonymous');
+    console.log('User Email:', results.userEmail || 'Not provided');
+    console.log('Assessment Date:', new Date().toLocaleDateString());
+    console.log('');
+    console.log('📈 RESULTS SUMMARY:');
+    console.log('Depression:', results.depression.percentage + '% -', results.depression.status);
+    console.log('Anxiety:', results.anxiety.percentage + '% -', results.anxiety.status);
+    console.log('Stress:', results.stress.percentage + '% -', results.stress.status);
+    console.log('');
+    console.log('📝 ALL QUESTION ANSWERS:');
+    results.answers.forEach((answer: any, index: number) => {
+      console.log(`${index + 1}. Question: ${answer.question}`);
+      console.log(`   Answer: ${answer.answer}`);
+      console.log(`   Level: ${answer.level}`);
+      console.log(`   Category: ${answer.category}`);
+      console.log('');
+    });
+    
+    if (results.bookingInfo) {
+      console.log('📅 BOOKING INFORMATION:');
+      console.log('Service:', results.bookingInfo.service);
+      console.log('Date:', results.bookingInfo.date);
+      console.log('Time:', results.bookingInfo.time);
+      console.log('');
+    }
+    
+    console.log('='.repeat(60));
+    
+    // User Email Content (if user email is available)
+    if (results.userEmail) {
+      console.log('📤 TO USER EMAIL:', results.userEmail);
+      console.log('📋 USER EMAIL CONTENT:');
+      console.log('Subject: Your Mental Health Assessment Results');
+      console.log('From: noreply@magirque.com');
+      console.log('To:', results.userEmail);
+      console.log('');
+      console.log('👤 PERSONAL RESULTS:');
+      console.log('Name:', results.userName || 'Anonymous');
+      console.log('Assessment Date:', new Date().toLocaleDateString());
+      console.log('');
+      console.log('📊 YOUR RESULTS:');
+      console.log('Depression:', results.depression.percentage + '% -', results.depression.status);
+      console.log('Anxiety:', results.anxiety.percentage + '% -', results.anxiety.status);
+      console.log('Stress:', results.stress.percentage + '% -', results.stress.status);
+      console.log('');
+      console.log('💡 RECOMMENDATIONS:');
+      console.log('- Based on your results, we recommend professional consultation');
+      console.log('- Your data has been shared with our mental health team');
+      console.log('- You will receive follow-up support within 24 hours');
+      
+      if (results.bookingInfo) {
+        console.log('');
+        console.log('📅 YOUR BOOKING CONFIRMATION:');
+        console.log('Service:', results.bookingInfo.service);
+        console.log('Date:', results.bookingInfo.date);
+        console.log('Time:', results.bookingInfo.time);
+        console.log('Meeting link will be sent separately');
+      }
+    } else {
+      console.log('📤 TO USER EMAIL: Not available (user did not provide email)');
+      console.log('📋 USER EMAIL CONTENT: Skipped - no email address provided');
+    }
+    
+    console.log('='.repeat(60));
+    console.log('✅ EMAILS READY TO SEND VIA HOSTINGER SMTP');
+    console.log('🔧 Backend integration required for actual sending');
+    console.log('='.repeat(60));
+  };
+
+
+
   if (showResults) {
     const results = calculateResults(answers);
     return (
@@ -147,14 +276,14 @@ function App() {
               />
             </div>
             
-            <div className="results-actions">
-              <button className="btn btn--secondary" onClick={handleRetakeAssessment}>
-                Retake Assessment
-              </button>
-              <button className="btn btn--primary" onClick={handleBookConsultation}>
-                Book Consultation
-              </button>
-            </div>
+                                  <div className="results-actions">
+                        <button className="btn btn--secondary" onClick={handleRetakeAssessment}>
+                          Retake Assessment
+                        </button>
+                        <button className="btn btn--primary" onClick={handleBookConsultation}>
+                          Book Consultation
+                        </button>
+                      </div>
           </div>
         </div>
         <BlobCursor
@@ -185,6 +314,7 @@ function App() {
         <BookingScreen 
           onBack={handleBookingBack}
           onBookingComplete={handleBookingComplete}
+          onEmailTrigger={handleEmailTrigger}
         />
         <BlobCursor
           blobType="circle"
@@ -207,6 +337,8 @@ function App() {
       </>
     );
   }
+
+
 
   if (!showAssessment) {
     return (

@@ -1,0 +1,398 @@
+// Email System Styles
+// =============================================================================
+
+.email-screen {
+  min-height: 100vh;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    lighten($primary-green, 55%) 0%,
+    lighten($primary-green, 40%) 20%,
+    lighten($primary-green, 30%) 30%,
+    lighten($muted-green, 15%) 200%
+  );
+  padding: $spacing-3xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @include mobile {
+    padding: $spacing-xl;
+  }
+}
+
+.email-container {
+  max-width: 800px;
+  width: 100%;
+  background: $white;
+  border-radius: 32px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  animation: slideUp 0.8s ease-out;
+  border: 1px solid rgba($white, 0.3);
+}
+
+.email-header {
+  background: $gradient-primary;
+  padding: $spacing-3xl;
+  text-align: center;
+  position: relative;
+  
+  .back-button {
+    position: absolute;
+    top: $spacing-xl;
+    left: $spacing-xl;
+    background: rgba($white, 0.2);
+    color: $white;
+    border: 1px solid rgba($white, 0.3);
+    padding: $spacing-sm $spacing-lg;
+    border-radius: $border-radius-full;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-normal;
+    backdrop-filter: blur(10px);
+    
+    &:hover {
+      background: rgba($white, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    @include mobile {
+      position: relative;
+      top: auto;
+      left: auto;
+      margin-bottom: $spacing-lg;
+    }
+  }
+  
+  .email-title {
+    font-size: clamp($font-size-3xl, 6vw, $font-size-4xl);
+    font-weight: $font-weight-black;
+    color: $white;
+    margin: 0;
+    text-shadow: 0 4px 12px rgba($dark-green, 0.3);
+    letter-spacing: -0.01em;
+  }
+}
+
+.email-content {
+  padding: $spacing-3xl;
+  
+  @include mobile {
+    padding: $spacing-xl;
+  }
+}
+
+.email-info {
+  margin-bottom: $spacing-3xl;
+  
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $dark-green;
+    margin-bottom: $spacing-md;
+  }
+  
+  p {
+    color: $muted-green;
+    line-height: 1.6;
+    margin-bottom: $spacing-2xl;
+    font-size: $font-size-lg;
+  }
+  
+  .results-preview {
+    background: rgba($primary-green, 0.05);
+    border-radius: $border-radius-lg;
+    padding: $spacing-2xl;
+    border: 2px solid rgba($primary-green, 0.1);
+    
+    h3 {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $dark-green;
+      margin-bottom: $spacing-lg;
+    }
+    
+    .preview-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+      
+      .preview-metric {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-md;
+        background: $white;
+        border-radius: $border-radius-md;
+        border: 1px solid rgba($muted-green, 0.1);
+        
+        @include mobile {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: $spacing-xs;
+        }
+        
+        .metric-label {
+          font-weight: $font-weight-semibold;
+          color: $dark-green;
+        }
+        
+        .metric-status {
+          font-weight: $font-weight-bold;
+          font-size: $font-size-sm;
+        }
+      }
+    }
+  }
+}
+
+.email-form {
+  margin-bottom: $spacing-3xl;
+  
+  .form-group {
+    margin-bottom: $spacing-lg;
+    
+    label {
+      display: block;
+      font-weight: $font-weight-semibold;
+      color: $dark-green;
+      margin-bottom: $spacing-sm;
+    }
+    
+    input {
+      width: 100%;
+      padding: $spacing-md;
+      border: 2px solid rgba($muted-green, 0.2);
+      border-radius: $border-radius-md;
+      font-size: $font-size-base;
+      transition: all $transition-normal;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary-green;
+        box-shadow: 0 0 0 3px rgba($primary-green, 0.1);
+      }
+      
+      &::placeholder {
+        color: $muted-green;
+      }
+    }
+  }
+  
+  .error-message {
+    background: rgba(#ef4444, 0.1);
+    color: #ef4444;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-lg;
+    font-weight: $font-weight-medium;
+  }
+  
+  .email-actions {
+    display: flex;
+    gap: $spacing-lg;
+    
+    @include mobile {
+      flex-direction: column;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: $spacing-lg;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      border-radius: $border-radius-full;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      
+      &.btn--primary {
+        background: $gradient-primary;
+        color: $white;
+        border: none;
+        box-shadow: 0 12px 35px rgba($primary-green, 0.4);
+        
+        &:hover:not(:disabled) {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 45px rgba($primary-green, 0.5);
+        }
+      }
+      
+      &.btn--secondary {
+        background: transparent;
+        color: $primary-green;
+        border: 2px solid $primary-green;
+        
+        &:hover {
+          background: $primary-green;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+.email-disclaimer {
+  background: rgba($muted-green, 0.05);
+  border-radius: $border-radius-lg;
+  padding: $spacing-2xl;
+  border: 1px solid rgba($muted-green, 0.1);
+  
+  h3 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $dark-green;
+    margin-bottom: $spacing-md;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: $spacing-lg;
+    
+    li {
+      color: $muted-green;
+      padding: $spacing-xs 0;
+      position: relative;
+      padding-left: $spacing-lg;
+      
+      &:before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: $primary-green;
+        font-weight: $font-weight-bold;
+      }
+      
+      strong {
+        color: $dark-green;
+      }
+    }
+  }
+  
+  .privacy-note {
+    color: $muted-green;
+    font-size: $font-size-sm;
+    font-style: italic;
+    margin: 0;
+    padding-top: $spacing-md;
+    border-top: 1px solid rgba($muted-green, 0.1);
+  }
+}
+
+// Email Success State
+.email-success {
+  text-align: center;
+  padding: $spacing-3xl;
+  
+  .success-icon {
+    font-size: 4rem;
+    margin-bottom: $spacing-xl;
+    animation: bounce 0.6s ease-out;
+  }
+  
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $dark-green;
+    margin-bottom: $spacing-lg;
+  }
+  
+  p {
+    font-size: $font-size-lg;
+    color: $muted-green;
+    line-height: 1.6;
+    margin-bottom: $spacing-xl;
+  }
+  
+  .email-recipients {
+    background: rgba($primary-green, 0.1);
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-2xl;
+    
+    .recipient {
+      padding: $spacing-sm 0;
+      color: $dark-green;
+      font-size: $font-size-base;
+      
+      strong {
+        color: $primary-green;
+      }
+    }
+  }
+  
+  .email-summary {
+    background: $white;
+    border: 2px solid rgba($primary-green, 0.1);
+    border-radius: $border-radius-lg;
+    padding: $spacing-2xl;
+    margin-bottom: $spacing-2xl;
+    text-align: left;
+    
+    h3 {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $dark-green;
+      margin-bottom: $spacing-md;
+      text-align: center;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        color: $muted-green;
+        padding: $spacing-xs 0;
+        position: relative;
+        padding-left: $spacing-lg;
+        
+        &:before {
+          content: '✓';
+          position: absolute;
+          left: 0;
+          color: $primary-green;
+          font-weight: $font-weight-bold;
+        }
+      }
+    }
+  }
+  
+  .btn {
+    padding: $spacing-lg $spacing-3xl;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    border-radius: $border-radius-full;
+    background: $gradient-primary;
+    color: $white;
+    border: none;
+    box-shadow: 0 12px 35px rgba($primary-green, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 45px rgba($primary-green, 0.5);
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
