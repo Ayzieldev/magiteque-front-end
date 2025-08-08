@@ -12,7 +12,7 @@ interface CircularProgressProps {
 const CircularProgress: React.FC<CircularProgressProps> = ({
   percentage,
   size = 250,
-  strokeWidth = 12,
+  strokeWidth = 20, // Increased from 12 to 20 for thicker stroke
   color = '#12b695',
   label,
   status
@@ -47,15 +47,20 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
   // Convert status to CSS class format (lowercase with hyphens)
   const statusClass = status.toLowerCase().replace(/\s+/g, '-');
 
-  // choose color based on status
+  // choose color based on percentage only
   const getStatusColor = (): string => {
-    const s = status.toLowerCase();
-    if (s.includes('extremely')) return '#7f1d1d';
-    if (s.includes('severe')) return '#ef4444';
-    if (s.includes('moderate')) return '#f97316';
-    if (s.includes('mild')) return '#f59e0b';
-    if (s.includes('normal')) return '#10b981';
-    return color;
+    // Base color purely on percentage
+    if (percentage >= 80) {
+      return '#7f1d1d'; // Dark red for 80%+
+    } else if (percentage >= 60) {
+      return '#ef4444'; // Red for 60-79%
+    } else if (percentage >= 40) {
+      return '#f97316'; // Orange for 40-59%
+    } else if (percentage >= 20) {
+      return '#f59e0b'; // Yellow for 20-39%
+    } else {
+      return '#10b981'; // Green for 0-19%
+    }
   };
 
   // Calculate color based on animation progress
@@ -67,22 +72,26 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
     const startColor = '#10b981'; // Green
     const endColor = finalColor;
     
-    if (progress <= 0.3) {
-      // First 30%: Green to Yellow
-      const ratio = progress / 0.3;
-      return interpolateColor(startColor, '#f59e0b', ratio);
-    } else if (progress <= 0.6) {
-      // 30% to 60%: Yellow to Orange
-      const ratio = (progress - 0.3) / 0.3;
-      return interpolateColor('#f59e0b', '#f97316', ratio);
-    } else if (progress <= 0.8) {
-      // 60% to 80%: Orange to Red
-      const ratio = (progress - 0.6) / 0.2;
-      return interpolateColor('#f97316', '#ef4444', ratio);
+    // If the final color is green (normal), stay green
+    if (endColor === '#10b981') {
+      return startColor;
+    }
+    
+    // For other colors, animate from green to the final color
+    if (progress <= 0.5) {
+      // First 50%: Green to intermediate color
+      const ratio = progress / 0.5;
+      const intermediateColor = endColor === '#7f1d1d' ? '#ef4444' : 
+                              endColor === '#ef4444' ? '#f97316' : 
+                              endColor === '#f97316' ? '#f59e0b' : '#f59e0b';
+      return interpolateColor(startColor, intermediateColor, ratio);
     } else {
-      // 80% to 100%: Red to final color
-      const ratio = (progress - 0.8) / 0.2;
-      return interpolateColor('#ef4444', endColor, ratio);
+      // 50% to 100%: Intermediate to final color
+      const ratio = (progress - 0.5) / 0.5;
+      const intermediateColor = endColor === '#7f1d1d' ? '#ef4444' : 
+                              endColor === '#ef4444' ? '#f97316' : 
+                              endColor === '#f97316' ? '#f59e0b' : '#f59e0b';
+      return interpolateColor(intermediateColor, endColor, ratio);
     }
   };
 

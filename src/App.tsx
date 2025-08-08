@@ -134,10 +134,15 @@ function App() {
   };
 
   const handleEmailTrigger = (bookingData: any) => {
+    console.log('🚀 handleEmailTrigger CALLED with bookingData:', bookingData);
+    
     // Automatically send assessment results with booking info
     if (assessmentResults) {
+      console.log('✅ Assessment results found, preparing email data...');
       const resultsWithBooking = {
         ...assessmentResults,
+        userEmail: bookingData.email,
+        userName: bookingData.name,
         bookingInfo: {
           service: bookingData.service,
           date: bookingData.date,
@@ -153,8 +158,13 @@ function App() {
       console.log('📊 ASSESSMENT RESULTS:', assessmentResults);
       console.log('='.repeat(60));
       
-      // Call the email sending function
+      // Call the email sending function with detailed logging
+      console.log('📤 CALLING sendAssessmentResults...');
       sendAssessmentResults(resultsWithBooking);
+      console.log('✅ sendAssessmentResults called successfully');
+    } else {
+      console.log('❌ No assessment results available for email sending');
+      console.log('assessmentResults:', assessmentResults);
     }
   };
 

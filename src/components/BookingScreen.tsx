@@ -26,7 +26,7 @@ const SERVICES: Service[] = [
     type: 'zoom',
     duration: '1 hr',
     description: 'Professional mental wellness assessment via Zoom video call',
-    price: '$75',
+    price: '',
     icon: '📹'
   },
   {
@@ -35,7 +35,7 @@ const SERVICES: Service[] = [
     type: 'voice',
     duration: '1 hr',
     description: 'Professional mental wellness assessment via voice call',
-    price: '$65',
+    price: '',
     icon: '📞'
   }
 ];
@@ -92,7 +92,32 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete
 
   const handleSubmit = () => {
     if (bookingForm.name && bookingForm.email && bookingForm.selectedDate && bookingForm.selectedTime) {
+      console.log('🎯 BOOKING CONFIRMED - TRIGGERING EMAIL');
+      console.log('📋 BOOKING DATA:', {
+        name: bookingForm.name,
+        email: bookingForm.email,
+        service: bookingForm.selectedService?.name,
+        date: bookingForm.selectedDate,
+        time: bookingForm.selectedTime
+      });
+      
+      // Trigger email sending with booking data immediately when booking is confirmed
+      if (onEmailTrigger) {
+        console.log('📧 CALLING onEmailTrigger...');
+        onEmailTrigger({
+          ...bookingForm,
+          service: bookingForm.selectedService?.name,
+          date: bookingForm.selectedDate,
+          time: bookingForm.selectedTime
+        });
+        console.log('✅ onEmailTrigger called successfully');
+      } else {
+        console.log('❌ onEmailTrigger is not available');
+      }
       setCurrentStep('confirmation');
+    } else {
+      console.log('❌ Cannot confirm booking - missing required fields');
+      console.log('Form state:', bookingForm);
     }
   };
 
@@ -174,7 +199,6 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete
                   <p className="service-description">{service.description}</p>
                   <div className="service-details">
                     <span className="service-duration">⏱️ {service.duration}</span>
-                    <span className="service-price">{service.price}</span>
                   </div>
                 </div>
               ))}
@@ -191,7 +215,6 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete
               <div className="service-summary">
                 <span className="service-icon">{bookingForm.selectedService?.icon}</span>
                 <span className="service-name">{bookingForm.selectedService?.name}</span>
-                <span className="service-price">{bookingForm.selectedService?.price}</span>
               </div>
             </div>
 
@@ -317,15 +340,6 @@ const BookingScreen: React.FC<BookingScreenProps> = ({ onBack, onBookingComplete
               </div>
             </div>
             <button className="btn btn--primary" onClick={() => {
-              // Trigger email sending with booking data
-              if (onEmailTrigger) {
-                onEmailTrigger({
-                  ...bookingForm,
-                  service: bookingForm.selectedService?.name,
-                  date: bookingForm.selectedDate,
-                  time: bookingForm.selectedTime
-                });
-              }
               onBookingComplete(bookingForm);
               onBack();
             }}>
