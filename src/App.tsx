@@ -3,11 +3,13 @@ import './scss/main.scss';
 import StartScreen from './components/StartScreen';
 import BlobCursor from './components/blob';
 import CircularProgress from './components/CircularProgress';
+import BookingScreen from './components/BookingScreen';
 import { QUESTIONS, UserAnswer, calculateResults } from './data/questions';
 
 function App() {
   const [showAssessment, setShowAssessment] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showBooking, setShowBooking] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
@@ -97,6 +99,23 @@ function App() {
     handleStartAssessment();
   };
 
+  const handleBookConsultation = () => {
+    setShowBooking(true);
+    setShowResults(false);
+  };
+
+  const handleBookingBack = () => {
+    setShowBooking(false);
+    setShowResults(true);
+  };
+
+  const handleBookingComplete = (booking: any) => {
+    // In a real app, this would send the booking data to your backend
+    console.log('Booking completed:', booking);
+    setShowBooking(false);
+    setShowResults(true);
+  };
+
   if (showResults) {
     const results = calculateResults(answers);
     return (
@@ -132,12 +151,41 @@ function App() {
               <button className="btn btn--secondary" onClick={handleRetakeAssessment}>
                 Retake Assessment
               </button>
-              <button className="btn btn--primary">
+              <button className="btn btn--primary" onClick={handleBookConsultation}>
                 Book Consultation
               </button>
             </div>
           </div>
         </div>
+        <BlobCursor
+          blobType="circle"
+          fillColor="#12b695"
+          trailCount={3}
+          sizes={[40, 70, 50]}
+          innerSizes={[15, 25, 20]}
+          innerColor="rgba(255,255,255,0.9)"
+          opacities={[0.6, 0.4, 0.3]}
+          shadowColor="rgba(18,182,149,0.5)"
+          shadowBlur={8}
+          shadowOffsetX={0}
+          shadowOffsetY={0}
+          filterStdDeviation={20}
+          useFilter={true}
+          fastDuration={0.1}
+          slowDuration={0.5}
+          zIndex={9999}
+        />
+      </>
+    );
+  }
+
+  if (showBooking) {
+    return (
+      <>
+        <BookingScreen 
+          onBack={handleBookingBack}
+          onBookingComplete={handleBookingComplete}
+        />
         <BlobCursor
           blobType="circle"
           fillColor="#12b695"

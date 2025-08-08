@@ -29,17 +29,19 @@
     position: relative;
     z-index: 2;
     text-align: center;
-    max-width: 90vw;
-    max-height: 90vh;
-    padding: clamp($spacing-lg, 3vh, $spacing-2xl);
+    max-width: 85vw;
+    max-height: 85vh;
+    padding: clamp($spacing-2xl, 4vh, $spacing-3xl);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: clamp($spacing-xl, 3vh, $spacing-2xl);
     
     @include mobile {
-      padding: $spacing-md;
-      max-width: 95vw;
+      padding: $spacing-xl;
+      max-width: 92vw;
+      gap: $spacing-lg;
     }
   }
 }
@@ -160,26 +162,28 @@
 // Brand Section
 .brand-section {
   text-align: center;
-  margin-bottom: clamp($spacing-xl, 5vh, $spacing-2xl);
+  margin-bottom: clamp($spacing-2xl, 6vh, $spacing-3xl);
   
   .logo {
-    margin-bottom: clamp($spacing-sm, 1.5vh, $spacing-md);
+    margin-bottom: clamp($spacing-md, 2vh, $spacing-lg);
     
     .butterfly {
-      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-size: clamp(3rem, 7vw, 5rem);
       display: inline-block;
       animation: flutter 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba($dark-green, 0.2));
     }
   }
   
   .brand-name {
     font-family: $font-family-secondary;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: clamp(1.75rem, 4.5vw, 3rem);
     font-weight: $font-weight-black;
     color: $white;
     margin: 0;
-    text-shadow: 0 3px 8px rgba($dark-green, 0.3);
-    letter-spacing: 0.5px;
+    text-shadow: 0 4px 12px rgba($dark-green, 0.4);
+    letter-spacing: 1px;
+    line-height: 1.1;
   }
 }
 
@@ -187,25 +191,27 @@
 .main-content {
   .main-title {
     font-family: $font-family-secondary;
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-size: clamp(3rem, 9vw, 5.5rem);
     font-weight: $font-weight-black;
     color: $white;
-    margin-bottom: clamp($spacing-lg, 4vh, $spacing-2xl);
-    letter-spacing: -0.01em;
-    line-height: 1.1;
+    margin-bottom: clamp($spacing-xl, 5vh, $spacing-3xl);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
     text-align: center;
+    text-shadow: 0 6px 20px rgba($dark-green, 0.3);
   }
   
   .main-description {
-    font-size: clamp($font-size-base, 2.5vw, $font-size-xl);
+    font-size: clamp($font-size-lg, 3vw, $font-size-2xl);
     color: $white;
-    line-height: 1.7;
-    margin-bottom: clamp($spacing-lg, 4vh, $spacing-2xl);
-    max-width: min(700px, 80vw);
+    line-height: 1.6;
+    margin-bottom: clamp($spacing-xl, 5vh, $spacing-3xl);
+    max-width: min(800px, 85vw);
     margin-left: auto;
     margin-right: auto;
-    text-shadow: 0 2px 6px rgba($dark-green, 0.4);
+    text-shadow: 0 3px 10px rgba($dark-green, 0.5);
     font-weight: $font-weight-medium;
+    opacity: 0.95;
   }
 }
 
@@ -403,21 +409,21 @@
 // Start Button
 .start-button {
   @include button-base;
-  background: linear-gradient(135deg, lighten($primary-green, 10%) 0%, $primary-green 100%);
+  background: linear-gradient(135deg, lighten($primary-green, 15%) 0%, $primary-green 100%);
   color: $white;
-  font-size: clamp($font-size-lg, 3vw, $font-size-2xl);
-  font-weight: $font-weight-bold;
-  padding: clamp($spacing-md, 2vh, $spacing-xl) clamp($spacing-lg, 4vw, $spacing-2xl);
+  font-size: clamp($font-size-xl, 3.5vw, $font-size-3xl);
+  font-weight: $font-weight-black;
+  padding: clamp($spacing-lg, 3vh, $spacing-2xl) clamp($spacing-xl, 5vw, $spacing-3xl);
   border-radius: $border-radius-full;
-  box-shadow: 0 8px 25px rgba($primary-green, 0.3);
+  box-shadow: 0 12px 35px rgba($primary-green, 0.4);
   text-transform: uppercase;
-  letter-spacing: clamp(1px, 0.2vw, 2px);
+  letter-spacing: clamp(1.5px, 0.3vw, 3px);
   transition: all $transition-normal;
-  margin: clamp($spacing-lg, 3vh, $spacing-2xl) 0;
+  margin: clamp($spacing-xl, 4vh, $spacing-3xl) 0;
   position: relative;
   overflow: hidden;
-  outline-color: rgba($white, 0.9);
-  outline-width: 3px;
+  outline-color: rgba($white, 0.95);
+  outline-width: 4px;
   
   &::before {
     content: '';
