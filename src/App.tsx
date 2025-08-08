@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './scss/main.scss';
 import StartScreen from './components/StartScreen';
-import MuteButton from './components/MuteButton';
+import VolumeControl from './components/VolumeControl';
 import { useAudio } from './components/AudioProvider';
 import BlobCursor from './components/blob';
 import CircularProgress from './components/CircularProgress';
@@ -304,7 +304,7 @@ function App() {
             </button>
           </div>
         </div>
-        <MuteButton />
+        <VolumeControl />
         <BlobCursor
           blobType="circle"
           fillColor="#12b695"
@@ -335,7 +335,7 @@ function App() {
           onBookingComplete={handleBookingComplete}
           onEmailTrigger={handleEmailTrigger}
         />
-        <MuteButton />
+        <VolumeControl />
       </>
     );
   }
@@ -344,7 +344,7 @@ function App() {
     return (
       <>
         <StartScreen onStart={handleStartAssessment} />
-        <MuteButton />
+        <VolumeControl />
         <BlobCursor
           blobType="circle"
           fillColor="#12b695"
@@ -464,7 +464,7 @@ function App() {
           </div>
         </div>
       </main>
-      <MuteButton />
+      <VolumeControl />
     </div>
   );
 }

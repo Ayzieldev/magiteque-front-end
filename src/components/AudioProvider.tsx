@@ -6,6 +6,10 @@ type AudioContextValue = {
   playClick: () => void;
   playAnswerClick: () => void;
   ensureStarted: () => void;
+  setBackgroundVolume: (volume: number) => void;
+  setSfxVolume: (volume: number) => void;
+  backgroundVolume: number;
+  sfxVolume: number;
 };
 
 const AudioCtx = createContext<AudioContextValue | null>(null);
@@ -34,6 +38,8 @@ const CLICK_SOURCES = [
 
 export function AudioProvider({ children }: Props) {
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [backgroundVolume, setBackgroundVolume] = useState<number>(0.2);
+  const [sfxVolume, setSfxVolume] = useState<number>(0.4);
   const hasStartedRef = useRef<boolean>(false);
 
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -61,13 +67,13 @@ export function AudioProvider({ children }: Props) {
       const click = await resolveSource(CLICK_SOURCES);
       if (disposed) return;
 
-      if (bg) {
-        const a = new Audio(bg);
-        a.loop = true;
-        a.preload = 'auto';
-        a.volume = 0.2;
-        bgAudioRef.current = a;
-      }
+             if (bg) {
+         const a = new Audio(bg);
+         a.loop = true;
+         a.preload = 'auto';
+         a.volume = backgroundVolume;
+         bgAudioRef.current = a;
+       }
       if (click) {
         clickSrcRef.current = click;
       }
@@ -118,20 +124,41 @@ export function AudioProvider({ children }: Props) {
     const src = clickSrcRef.current;
     if (!src) return;
     const a = new Audio(src);
-    a.volume = 0.4;
+    a.volume = sfxVolume;
     a.play().catch(() => {});
   };
 
   const playAnswerClick = () => {
     if (isMuted) return;
     const a = new Audio('/audio/click-sound-2.mp3');
-    a.volume = 0.4;
+    a.volume = sfxVolume;
     a.play().catch(() => {});
   };
 
+  const updateBackgroundVolume = (volume: number) => {
+    setBackgroundVolume(volume);
+    if (bgAudioRef.current) {
+      bgAudioRef.current.volume = volume;
+    }
+  };
+
+  const updateSfxVolume = (volume: number) => {
+    setSfxVolume(volume);
+  };
+
   const value = useMemo(
-    () => ({ isMuted, toggleMute, playClick, playAnswerClick, ensureStarted }),
-    [isMuted]
+    () => ({ 
+      isMuted, 
+      toggleMute, 
+      playClick, 
+      playAnswerClick, 
+      ensureStarted,
+      setBackgroundVolume: updateBackgroundVolume,
+      setSfxVolume: updateSfxVolume,
+      backgroundVolume,
+      sfxVolume
+    }),
+    [isMuted, backgroundVolume, sfxVolume]
   );
 
   return <AudioCtx.Provider value={value}>{children}</AudioCtx.Provider>;
