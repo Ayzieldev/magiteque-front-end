@@ -1,0 +1,74 @@
+// Modal Component
+// =============================================================================
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($dark-green, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal-backdrop;
+  padding: $spacing-md;
+  
+  @include mobile {
+    padding: $spacing-sm;
+  }
+}
+
+.modal {
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  
+  .modal-header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid rgba($muted-green, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .modal-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $dark-green;
+      margin: 0;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: $font-size-xl;
+      color: $muted-green;
+      cursor: pointer;
+      padding: $spacing-xs;
+      border-radius: $border-radius-sm;
+      transition: all $transition-fast;
+      
+      &:hover {
+        background: rgba($muted-green, 0.1);
+        color: $dark-green;
+      }
+    }
+  }
+  
+  .modal-body {
+    padding: $spacing-lg;
+  }
+  
+  .modal-footer {
+    padding: $spacing-lg;
+    border-top: 1px solid rgba($muted-green, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+  }
+} 

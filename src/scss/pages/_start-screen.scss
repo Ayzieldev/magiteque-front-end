@@ -1,0 +1,547 @@
+// Start Screen Page Styles
+.start-screen {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    lighten($primary-green, 55%) 0%,
+    lighten($primary-green, 40%) 20%,
+    lighten($primary-green, 30%) 30%,
+    lighten($muted-green, 15%) 200%
+  );
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: clamp($spacing-lg, 3vh, $spacing-2xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    @include mobile {
+      padding: $spacing-md;
+      max-width: 95vw;
+    }
+  }
+}
+
+// Floating Background Elements
+.floating-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  
+  .cloud {
+    position: absolute;
+    background: rgba($white, 0.8);
+    border-radius: $border-radius-full;
+    animation: float 6s ease-in-out infinite;
+    
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      background: rgba($white, 0.8);
+      border-radius: $border-radius-full;
+    }
+    
+    &--1 {
+      width: 80px;
+      height: 40px;
+      top: 15%;
+      left: 10%;
+      animation-delay: 0s;
+      
+      &::before {
+        width: 50px;
+        height: 50px;
+        top: -25px;
+        left: 10px;
+      }
+      
+      &::after {
+        width: 60px;
+        height: 40px;
+        top: -15px;
+        right: 10px;
+      }
+    }
+    
+    &--2 {
+      width: 60px;
+      height: 30px;
+      top: 25%;
+      right: 15%;
+      animation-delay: 2s;
+      
+      &::before {
+        width: 40px;
+        height: 40px;
+        top: -20px;
+        left: 5px;
+      }
+      
+      &::after {
+        width: 45px;
+        height: 30px;
+        top: -10px;
+        right: 5px;
+      }
+    }
+    
+    &--3 {
+      width: 70px;
+      height: 35px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 4s;
+      
+      &::before {
+        width: 45px;
+        height: 45px;
+        top: -22px;
+        left: 8px;
+      }
+      
+      &::after {
+        width: 50px;
+        height: 35px;
+        top: -12px;
+        right: 8px;
+      }
+    }
+  }
+  
+  .flower {
+    position: absolute;
+    font-size: $font-size-2xl;
+    animation: sway 4s ease-in-out infinite;
+    
+    &--1 {
+      top: 20%;
+      right: 10%;
+      animation-delay: 1s;
+    }
+    
+    &--2 {
+      bottom: 30%;
+      right: 20%;
+      animation-delay: 3s;
+    }
+    
+    &--3 {
+      bottom: 15%;
+      left: 15%;
+      animation-delay: 5s;
+    }
+  }
+}
+
+// Brand Section
+.brand-section {
+  text-align: center;
+  margin-bottom: clamp($spacing-xl, 5vh, $spacing-2xl);
+  
+  .logo {
+    margin-bottom: clamp($spacing-sm, 1.5vh, $spacing-md);
+    
+    .butterfly {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      display: inline-block;
+      animation: flutter 3s ease-in-out infinite;
+    }
+  }
+  
+  .brand-name {
+    font-family: $font-family-secondary;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: $font-weight-black;
+    color: $white;
+    margin: 0;
+    text-shadow: 0 3px 8px rgba($dark-green, 0.3);
+    letter-spacing: 0.5px;
+  }
+}
+
+// Main Content
+.main-content {
+  .main-title {
+    font-family: $font-family-secondary;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: $font-weight-black;
+    color: $white;
+    margin-bottom: clamp($spacing-lg, 4vh, $spacing-2xl);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    text-align: center;
+  }
+  
+  .main-description {
+    font-size: clamp($font-size-base, 2.5vw, $font-size-xl);
+    color: $white;
+    line-height: 1.7;
+    margin-bottom: clamp($spacing-lg, 4vh, $spacing-2xl);
+    max-width: min(700px, 80vw);
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 2px 6px rgba($dark-green, 0.4);
+    font-weight: $font-weight-medium;
+  }
+}
+
+// Character Section
+.character-section {
+  position: relative;
+  margin: clamp($spacing-lg, 3vh, $spacing-2xl) 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp($spacing-lg, 4vw, $spacing-2xl);
+  min-height: clamp(150px, 20vh, 250px);
+}
+
+.character {
+  position: relative;
+  filter: drop-shadow(0 8px 20px rgba($dark-green, 0.2));
+  
+  &--main {
+    animation: gentle-bounce 3s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+  
+  &--companion {
+    animation: gentle-bounce 3s ease-in-out infinite;
+    animation-delay: 1.5s;
+    transform: scale(0.8);
+    transform-origin: bottom center;
+  }
+  
+  &__body {
+    width: 100px;
+    height: 120px;
+    background: linear-gradient(135deg, lighten($primary-green, 25%) 0%, $primary-green 100%);
+    border-radius: 50px 50px 30px 30px;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: inset 0 -10px 20px rgba($dark-green, 0.1);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: rgba($white, 0.1);
+      border-radius: $border-radius-full;
+    }
+    
+    &--small {
+      width: 80px;
+      height: 100px;
+      background: linear-gradient(135deg, lighten($muted-green, 40%) 0%, lighten($muted-green, 20%) 100%);
+      border-radius: 40px 40px 25px 25px;
+      
+      &::before {
+        width: 50px;
+        height: 50px;
+        top: 12px;
+      }
+    }
+  }
+  
+  &__face {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, lighten($primary-green, 30%) 0%, lighten($primary-green, 15%) 100%);
+    border-radius: $border-radius-full;
+    box-shadow: 0 5px 15px rgba($dark-green, 0.2);
+    
+    &--small {
+      width: 65px;
+      height: 65px;
+      top: -40px;
+      background: linear-gradient(135deg, lighten($muted-green, 45%) 0%, lighten($muted-green, 25%) 100%);
+    }
+  }
+  
+  &__eyes {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    
+    &--small {
+      top: 16px;
+      gap: 10px;
+    }
+    
+    .eye {
+      width: 12px;
+      height: 12px;
+      background: $dark-green;
+      border-radius: $border-radius-full;
+      animation: happy-blink 4s ease-in-out infinite;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 4px;
+        height: 4px;
+        background: rgba($white, 0.8);
+        border-radius: $border-radius-full;
+      }
+      
+      &--small {
+        width: 10px;
+        height: 10px;
+        
+        &::after {
+          width: 3px;
+          height: 3px;
+        }
+      }
+    }
+  }
+  
+  &__mouth {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 15px;
+    border: 3px solid $dark-green;
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    animation: smile 5s ease-in-out infinite;
+    
+    &--small {
+      width: 25px;
+      height: 12px;
+      bottom: 16px;
+      border-width: 2px;
+    }
+  }
+  
+  &__arms {
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    
+    .arm {
+      position: absolute;
+      width: 20px;
+      height: 50px;
+      background: linear-gradient(135deg, lighten($primary-green, 25%) 0%, $primary-green 100%);
+      border-radius: 25px;
+      box-shadow: 0 3px 8px rgba($dark-green, 0.2);
+      
+      &--left {
+        left: -15px;
+        transform: rotate(-20deg);
+        animation: enthusiastic-wave-left 2.5s ease-in-out infinite;
+        transform-origin: top center;
+      }
+      
+      &--right {
+        right: -15px;
+        transform: rotate(20deg);
+        animation: enthusiastic-wave-right 2.5s ease-in-out infinite;
+        transform-origin: top center;
+      }
+    }
+  }
+  
+  // Add floating hearts around characters
+  &::after {
+    content: '💚';
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-size: 20px;
+    animation: floating-heart 3s ease-in-out infinite;
+    opacity: 0.8;
+  }
+  
+  &--companion::after {
+    content: '✨';
+    animation-delay: 1s;
+  }
+}
+
+// Start Button
+.start-button {
+  @include button-base;
+  background: linear-gradient(135deg, lighten($primary-green, 10%) 0%, $primary-green 100%);
+  color: $white;
+  font-size: clamp($font-size-lg, 3vw, $font-size-2xl);
+  font-weight: $font-weight-bold;
+  padding: clamp($spacing-md, 2vh, $spacing-xl) clamp($spacing-lg, 4vw, $spacing-2xl);
+  border-radius: $border-radius-full;
+  box-shadow: 0 8px 25px rgba($primary-green, 0.3);
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.2vw, 2px);
+  transition: all $transition-normal;
+  margin: clamp($spacing-lg, 3vh, $spacing-2xl) 0;
+  position: relative;
+  overflow: hidden;
+  outline-color: rgba($white, 0.9);
+  outline-width: 3px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba($white, 0.2), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 35px rgba($primary-green, 0.4);
+    background: linear-gradient(135deg, lighten($primary-green, 15%) 0%, lighten($primary-green, 5%) 100%);
+    outline-color: $white;
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-2px) scale(1.05);
+  }
+}
+
+// Info Section
+.info-section {
+  margin-top: clamp($spacing-lg, 3vh, $spacing-2xl);
+  
+  .info-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp($spacing-sm, 1vw, $spacing-md);
+    color: $white;
+    font-size: clamp($font-size-sm, 2vw, $font-size-base);
+    font-weight: $font-weight-medium;
+    margin-bottom: clamp($spacing-sm, 1vh, $spacing-md);
+    text-shadow: 0 2px 4px rgba($dark-green, 0.3);
+    
+    .info-icon {
+      font-size: clamp($font-size-base, 2.5vw, $font-size-lg);
+    }
+  }
+}
+
+// Animations
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes flutter {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-5deg) scale(1.1); }
+  75% { transform: rotate(5deg) scale(1.1); }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+  }
+  50% { 
+    transform: translateY(-12px) scale(1.02); 
+  }
+}
+
+@keyframes happy-blink {
+  0%, 85%, 100% { 
+    transform: scaleY(1); 
+  }
+  90% { 
+    transform: scaleY(0.1); 
+  }
+}
+
+@keyframes smile {
+  0%, 70%, 100% { 
+    transform: translateX(-50%) scaleX(1); 
+  }
+  85% { 
+    transform: translateX(-50%) scaleX(1.2); 
+  }
+}
+
+@keyframes enthusiastic-wave-left {
+  0%, 100% { 
+    transform: rotate(-20deg); 
+  }
+  25% { 
+    transform: rotate(-35deg); 
+  }
+  75% { 
+    transform: rotate(-5deg); 
+  }
+}
+
+@keyframes enthusiastic-wave-right {
+  0%, 100% { 
+    transform: rotate(20deg); 
+  }
+  25% { 
+    transform: rotate(35deg); 
+  }
+  75% { 
+    transform: rotate(5deg); 
+  }
+}
+
+@keyframes floating-heart {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+    opacity: 0.8; 
+  }
+  50% { 
+    transform: translateY(-8px) scale(1.1); 
+    opacity: 1; 
+  }
+}

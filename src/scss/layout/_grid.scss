@@ -1,0 +1,43 @@
+// Grid Layout
+// =============================================================================
+
+.app-main {
+  min-height: calc(100vh - 80px);
+  padding: $spacing-xl 0;
+  
+  @include mobile {
+    padding: $spacing-lg 0;
+  }
+}
+
+// Grid system
+.grid {
+  display: grid;
+  gap: $spacing-lg;
+  
+  &--cols-1 { grid-template-columns: repeat(1, 1fr); }
+  &--cols-2 { grid-template-columns: repeat(2, 1fr); }
+  &--cols-3 { grid-template-columns: repeat(3, 1fr); }
+  &--cols-4 { grid-template-columns: repeat(4, 1fr); }
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Flex utilities
+.flex {
+  display: flex;
+  
+  &--center {
+    @include flex-center;
+  }
+  
+  &--between {
+    @include flex-between;
+  }
+  
+  &--column {
+    @include flex-column;
+  }
+} 

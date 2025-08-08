@@ -1,0 +1,61 @@
+// Header Layout
+.app-header {
+  background: rgba($white, 0.95);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 4px 20px rgba($primary-green, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+  padding: $spacing-lg 0;
+  border-bottom: 1px solid rgba($primary-green, 0.1);
+  
+  .container {
+    @include flex-center;
+    
+    .app-title {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      margin: 0;
+      text-align: center;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: $gradient-primary;
+        border-radius: $border-radius-full;
+        animation: pulse 3s ease-in-out infinite;
+      }
+      
+      @include mobile {
+        font-size: $font-size-2xl;
+      }
+    }
+    
+    .app-nav {
+      display: flex;
+      gap: $spacing-lg;
+      
+      @include mobile {
+        gap: $spacing-md;
+      }
+      
+      .nav-link {
+        color: $muted-green;
+        text-decoration: none;
+        font-weight: $font-weight-medium;
+        transition: color $transition-fast;
+        
+        &:hover,
+        &.active {
+          color: $primary-green;
+        }
+      }
+    }
+  }
+} 

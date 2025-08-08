@@ -1,0 +1,180 @@
+// Booking Page
+// =============================================================================
+
+.booking-page {
+  min-height: 100vh;
+  background: $gradient-primary;
+  padding: $spacing-xl 0;
+  
+  @include mobile {
+    padding: $spacing-lg 0;
+  }
+  
+  .booking-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .booking-header {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+    
+    .booking-title {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $white;
+      margin-bottom: $spacing-md;
+      
+      @include mobile {
+        font-size: $font-size-2xl;
+      }
+    }
+    
+    .booking-subtitle {
+      font-size: $font-size-lg;
+      color: rgba($white, 0.9);
+    }
+  }
+  
+  .booking-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
+    
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
+  }
+  
+  .service-selection {
+    background: $white;
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl;
+    box-shadow: $shadow-lg;
+    margin-bottom: $spacing-xl;
+    
+    .service-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $dark-green;
+      margin-bottom: $spacing-lg;
+      text-align: center;
+    }
+    
+    .service-options {
+      display: grid;
+      gap: $spacing-md;
+    }
+    
+    .service-option {
+      padding: $spacing-lg;
+      border: 2px solid rgba($muted-green, 0.2);
+      border-radius: $border-radius-md;
+      cursor: pointer;
+      transition: all $transition-normal;
+      
+      &:hover {
+        border-color: $primary-green;
+        background: rgba($primary-green, 0.05);
+      }
+      
+      &.selected {
+        border-color: $primary-green;
+        background: rgba($primary-green, 0.1);
+      }
+      
+      .service-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto $spacing-md;
+        background: $gradient-primary;
+        border-radius: $border-radius-md;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        svg {
+          width: 24px;
+          height: 24px;
+          color: $white;
+        }
+      }
+      
+      .service-name {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $dark-green;
+        margin-bottom: $spacing-xs;
+        text-align: center;
+      }
+      
+      .service-description {
+        font-size: $font-size-sm;
+        color: $muted-green;
+        text-align: center;
+        margin-bottom: $spacing-sm;
+      }
+      
+      .service-duration {
+        font-size: $font-size-sm;
+        color: $primary-green;
+        font-weight: $font-weight-medium;
+        text-align: center;
+      }
+    }
+  }
+  
+  .appointment-scheduling {
+    background: $white;
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl;
+    box-shadow: $shadow-lg;
+    margin-bottom: $spacing-xl;
+    
+    .schedule-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $dark-green;
+      margin-bottom: $spacing-lg;
+      text-align: center;
+    }
+    
+    .calendar-container {
+      margin-bottom: $spacing-lg;
+    }
+    
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: $spacing-sm;
+      
+      .time-slot {
+        padding: $spacing-sm;
+        border: 1px solid rgba($muted-green, 0.2);
+        border-radius: $border-radius-sm;
+        text-align: center;
+        cursor: pointer;
+        transition: all $transition-normal;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        
+        &:hover {
+          border-color: $primary-green;
+          background: rgba($primary-green, 0.05);
+        }
+        
+        &.selected {
+          background: $primary-green;
+          color: $white;
+          border-color: $primary-green;
+        }
+        
+        &.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+} 

@@ -1,0 +1,45 @@
+// Level Indicator Component
+.level-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  
+  .level-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: $border-radius-full;
+    background: $gradient-primary;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    box-shadow: $shadow-md;
+  }
+  
+  .level-info {
+    flex: 1;
+    
+    .level-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $dark-green;
+      margin-bottom: $spacing-xs;
+    }
+    
+    .level-progress {
+      @include progress-bar;
+      margin-bottom: $spacing-xs;
+      
+      .progress-fill {
+        @include progress-fill;
+      }
+    }
+    
+    .level-text {
+      font-size: $font-size-sm;
+      color: $muted-green;
+    }
+  }
+} 

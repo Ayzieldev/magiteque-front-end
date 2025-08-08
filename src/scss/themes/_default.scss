@@ -1,0 +1,33 @@
+// Default Theme
+:root {
+  scroll-behavior: smooth;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($muted-green, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: $muted-green;
+  border-radius: $border-radius-full;
+  
+  &:hover {
+    background: $primary-green;
+  }
+}
+
+// Text selection
+::selection {
+  background: rgba($primary-green, 0.2);
+  color: $dark-green;
+}
+
+::-moz-selection {
+  background: rgba($primary-green, 0.2);
+  color: $dark-green;
+} 
