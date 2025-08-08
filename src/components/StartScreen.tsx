@@ -28,7 +28,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
         <div className="main-content">
           <h2 className="main-title">Mental Wellness <br /> Assessment</h2>
           
-          <div className="character-section">
+          {/* <div className="character-section">
             <div className="character character--main">
               <div className="character__body"></div>
               <div className="character__face">
@@ -54,7 +54,7 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
                 <div className="character__mouth character__mouth--small"></div>
               </div>
             </div>
-          </div>
+          </div> */}
           
           <button 
             className="start-button" 
