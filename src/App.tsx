@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './scss/main.scss';
 import StartScreen from './components/StartScreen';
+import MuteButton from './components/MuteButton';
+import { useAudio } from './components/AudioProvider';
 import BlobCursor from './components/blob';
 import CircularProgress from './components/CircularProgress';
 import BookingScreen from './components/BookingScreen';
@@ -16,12 +18,15 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [assessmentResults, setAssessmentResults] = useState<any>(null);
   const [adminEmail] = useState('admin@magirque.com'); // Configure your admin email here
+  const { playClick, playAnswerClick, ensureStarted } = useAudio();
 
   const currentQuestion = QUESTIONS[currentQuestionIndex];
   const totalQuestions = QUESTIONS.length;
   const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
 
   const handleStartAssessment = () => {
+    ensureStarted();
+    playClick();
     setShowAssessment(true);
     setShowResults(false);
     setCurrentQuestionIndex(0);
@@ -31,6 +36,7 @@ function App() {
   };
 
   const handleAnswerSelect = (value: string) => {
+    playAnswerClick();
     setSelectedAnswer(value);
   };
 
@@ -71,6 +77,7 @@ function App() {
     }
 
     // Move to next question
+    playClick();
     const nextIndex = currentQuestionIndex + 1;
     setCurrentQuestionIndex(nextIndex);
     
@@ -86,6 +93,7 @@ function App() {
 
   const handlePrevQuestion = () => {
     if (currentQuestionIndex > 0) {
+      playClick();
       // Remove the last answer
       const updatedAnswers = answers.slice(0, -1);
       setAnswers(updatedAnswers);
@@ -112,16 +120,19 @@ function App() {
   };
 
   const handleRetakeAssessment = () => {
+    playClick();
     setShowResults(false);
     handleStartAssessment();
   };
 
   const handleBookConsultation = () => {
+    playClick();
     setShowResults(false);
     setShowBooking(true);
   };
 
   const handleBookingBack = () => {
+    playClick();
     setShowBooking(false);
     setShowResults(true);
   };
@@ -293,6 +304,7 @@ function App() {
             </button>
           </div>
         </div>
+        <MuteButton />
         <BlobCursor
           blobType="circle"
           fillColor="#12b695"
@@ -317,11 +329,14 @@ function App() {
 
   if (showBooking) {
     return (
-      <BookingScreen 
-        onBack={handleBookingBack}
-        onBookingComplete={handleBookingComplete}
-        onEmailTrigger={handleEmailTrigger}
-      />
+      <>
+        <BookingScreen 
+          onBack={handleBookingBack}
+          onBookingComplete={handleBookingComplete}
+          onEmailTrigger={handleEmailTrigger}
+        />
+        <MuteButton />
+      </>
     );
   }
 
@@ -329,6 +344,7 @@ function App() {
     return (
       <>
         <StartScreen onStart={handleStartAssessment} />
+        <MuteButton />
         <BlobCursor
           blobType="circle"
           fillColor="#12b695"
@@ -448,6 +464,7 @@ function App() {
           </div>
         </div>
       </main>
+      <MuteButton />
     </div>
   );
 }
