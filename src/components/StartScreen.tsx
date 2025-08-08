@@ -56,7 +56,10 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
             </div>
           </div>
           
-          <button className="start-button" onClick={onStart}>
+          <button 
+            className="start-button" 
+            onClick={onStart}
+          >
             LET'S START
           </button>
 
