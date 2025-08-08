@@ -95,7 +95,7 @@ export function AudioProvider({ children }: Props) {
     return () => {
       disposed = true;
     };
-  }, []); // Only run once on mount
+  }, [backgroundVolume, isMuted]); // Include dependencies
 
   const ensureStarted = useCallback(() => {
     const bg = bgAudioRef.current;
@@ -164,7 +164,7 @@ export function AudioProvider({ children }: Props) {
       backgroundVolume,
       sfxVolume
     }),
-    [isMuted, backgroundVolume, sfxVolume, ensureStarted, playClick, playAnswerClick, updateBackgroundVolume, updateSfxVolume]
+    [isMuted, backgroundVolume, sfxVolume, ensureStarted, playClick, playAnswerClick, updateBackgroundVolume, updateSfxVolume, toggleMute]
   );
 
   return <AudioCtx.Provider value={value}>{children}</AudioCtx.Provider>;
