@@ -108,7 +108,7 @@ export function AudioProvider({ children }: Props) {
         bgAudioRef.current = null;
       }
     };
-  }, [backgroundVolume, ensureStarted]);
+  }, [ensureStarted]);
 
   const toggleMute = () => {
     setIsMuted((prev) => {
@@ -141,6 +141,13 @@ export function AudioProvider({ children }: Props) {
       bgAudioRef.current.volume = volume;
     }
   }, []);
+
+  // Handle background volume changes without recreating audio element
+  useEffect(() => {
+    if (bgAudioRef.current) {
+      bgAudioRef.current.volume = backgroundVolume;
+    }
+  }, [backgroundVolume]);
 
   const updateSfxVolume = useCallback((volume: number) => {
     setSfxVolume(volume);
