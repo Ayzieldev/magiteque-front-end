@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAudio } from './AudioProvider';
 
 interface StartScreenProps {
   onStart: () => void;
 }
 
 const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
+  const { ensureStarted } = useAudio();
+
+  // Start audio on first user interaction
+  useEffect(() => {
+    const onFirstInteract = () => {
+      ensureStarted();
+      window.removeEventListener('pointerdown', onFirstInteract);
+      window.removeEventListener('keydown', onFirstInteract);
+      window.removeEventListener('click', onFirstInteract);
+    };
+    
+    window.addEventListener('pointerdown', onFirstInteract);
+    window.addEventListener('keydown', onFirstInteract);
+    window.addEventListener('click', onFirstInteract);
+
+    return () => {
+      window.removeEventListener('pointerdown', onFirstInteract);
+      window.removeEventListener('keydown', onFirstInteract);
+      window.removeEventListener('click', onFirstInteract);
+    };
+  }, [ensureStarted]);
   return (
     <div className="start-screen">
       <div className="start-screen__background">

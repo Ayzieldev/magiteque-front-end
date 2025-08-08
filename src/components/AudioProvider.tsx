@@ -41,6 +41,7 @@ export function AudioProvider({ children }: Props) {
   const [backgroundVolume, setBackgroundVolume] = useState<number>(0.2);
   const [sfxVolume, setSfxVolume] = useState<number>(0.4);
   const hasStartedRef = useRef<boolean>(false);
+  const isInitializedRef = useRef<boolean>(false);
 
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
   const clickSrcRef = useRef<string | null>(null);
@@ -59,18 +60,10 @@ export function AudioProvider({ children }: Props) {
     return null;
   };
 
-  const ensureStarted = useCallback(() => {
-    if (hasStartedRef.current) return;
-    const bg = bgAudioRef.current;
-    if (!bg) return;
-    bg.muted = isMuted;
-    bg.play().catch(() => {
-      // Autoplay blocked until user gesture; will retry on next interaction
-    });
-    hasStartedRef.current = true;
-  }, [isMuted]);
-
+  // Initialize audio elements once
   useEffect(() => {
+    if (isInitializedRef.current) return;
+    
     let disposed = false;
     (async () => {
       const bg = await resolveSource(BACKGROUND_SOURCES);
@@ -78,46 +71,62 @@ export function AudioProvider({ children }: Props) {
       const click = await resolveSource(CLICK_SOURCES);
       if (disposed) return;
 
-             if (bg) {
-         const a = new Audio(bg);
-         a.loop = true;
-         a.preload = 'auto';
-         a.volume = backgroundVolume;
-         bgAudioRef.current = a;
-       }
+      if (bg) {
+        const a = new Audio(bg);
+        a.loop = true;
+        a.preload = 'auto';
+        a.volume = backgroundVolume;
+        a.muted = isMuted;
+        bgAudioRef.current = a;
+        
+        // Try to start playing immediately
+        a.play().catch(() => {
+          // Autoplay blocked, will start on user interaction
+        });
+        hasStartedRef.current = true;
+      }
       if (click) {
         clickSrcRef.current = click;
       }
+      
+      isInitializedRef.current = true;
     })();
-
-    const onFirstInteract = () => {
-      ensureStarted();
-      window.removeEventListener('pointerdown', onFirstInteract);
-      window.removeEventListener('keydown', onFirstInteract);
-    };
-    window.addEventListener('pointerdown', onFirstInteract);
-    window.addEventListener('keydown', onFirstInteract);
 
     return () => {
       disposed = true;
-      window.removeEventListener('pointerdown', onFirstInteract);
-      window.removeEventListener('keydown', onFirstInteract);
-      if (bgAudioRef.current) {
-        bgAudioRef.current.pause();
-        bgAudioRef.current.src = '';
-        bgAudioRef.current = null;
-      }
     };
-  }, [ensureStarted]);
+  }, []); // Only run once on mount
 
-  const toggleMute = () => {
-    setIsMuted((prev) => {
-      const next = !prev;
-      const bg = bgAudioRef.current;
-      if (bg) bg.muted = next;
-      return next;
-    });
-  };
+  const ensureStarted = useCallback(() => {
+    const bg = bgAudioRef.current;
+    if (!bg) return;
+    
+    // If not already playing, try to start
+    if (bg.paused) {
+      bg.muted = isMuted;
+      bg.play().catch(() => {
+        // Autoplay blocked until user gesture; will retry on next interaction
+      });
+    }
+  }, [isMuted]);
+
+  // Handle mute state changes
+  useEffect(() => {
+    if (bgAudioRef.current) {
+      bgAudioRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  // Handle volume changes
+  useEffect(() => {
+    if (bgAudioRef.current) {
+      bgAudioRef.current.volume = backgroundVolume;
+    }
+  }, [backgroundVolume]);
+
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => !prev);
+  }, []);
 
   const playClick = useCallback(() => {
     if (isMuted) return;
@@ -137,17 +146,7 @@ export function AudioProvider({ children }: Props) {
 
   const updateBackgroundVolume = useCallback((volume: number) => {
     setBackgroundVolume(volume);
-    if (bgAudioRef.current) {
-      bgAudioRef.current.volume = volume;
-    }
   }, []);
-
-  // Handle background volume changes without recreating audio element
-  useEffect(() => {
-    if (bgAudioRef.current) {
-      bgAudioRef.current.volume = backgroundVolume;
-    }
-  }, [backgroundVolume]);
 
   const updateSfxVolume = useCallback((volume: number) => {
     setSfxVolume(volume);
