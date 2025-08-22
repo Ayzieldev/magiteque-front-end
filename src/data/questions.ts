@@ -1,10 +1,13 @@
-// DASS-21 (Depression, Anxiety and Stress Scale) Questions Database
-// Based on the official DASS-21 questionnaire
+// Integrated Mental Health Assessment System
+// DASS-21 (Depression, Anxiety and Stress Scale) + STAR of Well-Being
+// Based on the official DASS-21 questionnaire and Positive Psychology framework
+
+import { STAR_QUESTIONS, StarUserAnswer, calculateStarResults, StarAssessmentResult } from './star-assessment';
 
 export interface Question {
   id: number;
   level: number;
-  category: 'Depression' | 'Anxiety' | 'Stress';
+  category: 'Depression' | 'Anxiety' | 'Stress' | 'Inherent' | 'Coherent';
   text: string;
   options: {
     '1': { stars: number; label: string; score: number };
@@ -21,6 +24,7 @@ export interface UserAnswer {
 }
 
 export interface AssessmentResult {
+  // DASS-21 Results
   depression: {
     score: number;
     percentage: number;
@@ -38,9 +42,17 @@ export interface AssessmentResult {
   };
   overallScore: number;
   overallStatus: 'Healthy' | 'At Risk';
+
+  // STAR Results
+  starResults: StarAssessmentResult;
+
+  // Combined Assessment
+  assessmentType: 'DASS' | 'STAR' | 'COMBINED';
 }
 
-export const QUESTIONS: Question[] = [
+// Combined DASS-21 + STAR Assessment Questions
+// Level-based progression with integrated well-being assessment
+export const DASS_QUESTIONS: Question[] = [
   // DASS-21 Questions - All 21 questions in order
   // Stress: Items 1, 6, 8, 11, 12, 14, 18
   // Anxiety: Items 2, 4, 7, 9, 15, 19, 20
@@ -321,6 +333,19 @@ export const QUESTIONS: Question[] = [
   }
 ];
 
+// Combined Assessment - DASS-21 + STAR Questions
+// Total: 33 questions (21 DASS + 12 STAR)
+export const QUESTIONS: Question[] = [
+  ...DASS_QUESTIONS,
+  ...STAR_QUESTIONS.map(starQuestion => ({
+    id: starQuestion.id,
+    level: starQuestion.level,
+    category: starQuestion.category,
+    text: starQuestion.text,
+    options: starQuestion.options
+  }))
+];
+
 // DASS-21 Scoring and Interpretation
 // Severity Level	Depression	Anxiety	Stress
 // Normal	        0–9	        0–7	        0–14
@@ -331,17 +356,33 @@ export const QUESTIONS: Question[] = [
 
 // Helper functions for assessment calculations
 export const calculateResults = (answers: UserAnswer[]): AssessmentResult => {
-  const depressionAnswers = answers.filter(answer => {
+  // Separate DASS and STAR answers
+  const dassAnswers = answers.filter(answer => {
+    const question = QUESTIONS.find(q => q.id === answer.questionId);
+    return question?.category === 'Depression' || question?.category === 'Anxiety' || question?.category === 'Stress';
+  });
+
+  const starAnswers: StarUserAnswer[] = answers.filter(answer => {
+    const question = QUESTIONS.find(q => q.id === answer.questionId);
+    return question?.category === 'Inherent' || question?.category === 'Coherent';
+  }).map(answer => ({
+    questionId: answer.questionId,
+    selectedOption: answer.selectedOption,
+    score: answer.score
+  }));
+
+  // Calculate DASS results
+  const depressionAnswers = dassAnswers.filter(answer => {
     const question = QUESTIONS.find(q => q.id === answer.questionId);
     return question?.category === 'Depression';
   });
-  
-  const anxietyAnswers = answers.filter(answer => {
+
+  const anxietyAnswers = dassAnswers.filter(answer => {
     const question = QUESTIONS.find(q => q.id === answer.questionId);
     return question?.category === 'Anxiety';
   });
-  
-  const stressAnswers = answers.filter(answer => {
+
+  const stressAnswers = dassAnswers.filter(answer => {
     const question = QUESTIONS.find(q => q.id === answer.questionId);
     return question?.category === 'Stress';
   });
@@ -385,17 +426,30 @@ export const calculateResults = (answers: UserAnswer[]): AssessmentResult => {
   const depressionStatus = getSeverityStatus(depression.score, 'Depression');
   const anxietyStatus = getSeverityStatus(anxiety.score, 'Anxiety');
   const stressStatus = getSeverityStatus(stress.score, 'Stress');
-  
+
   const overallScore = depression.score + anxiety.score + stress.score;
   const overallPercentage = (depression.percentage + anxiety.percentage + stress.percentage) / 3;
   const overallStatus = overallPercentage < 40 ? 'Healthy' : 'At Risk';
+
+  // Calculate STAR results
+  const starResults = calculateStarResults(starAnswers);
+
+  // Determine assessment type
+  const hasDassAnswers = dassAnswers.length > 0;
+  const hasStarAnswers = starAnswers.length > 0;
+  let assessmentType: 'DASS' | 'STAR' | 'COMBINED' = 'COMBINED';
+
+  if (hasDassAnswers && !hasStarAnswers) assessmentType = 'DASS';
+  else if (!hasDassAnswers && hasStarAnswers) assessmentType = 'STAR';
 
   return {
     depression: { ...depression, status: depressionStatus },
     anxiety: { ...anxiety, status: anxietyStatus },
     stress: { ...stress, status: stressStatus },
     overallScore,
-    overallStatus
+    overallStatus,
+    starResults,
+    assessmentType
   };
 };
 

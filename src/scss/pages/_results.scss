@@ -110,19 +110,143 @@
   
   .results-metrics {
     display: flex !important;
-    flex-wrap: wrap;
-    flex-direction: row !important;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column !important;
     gap: $spacing-3xl;
     padding: $spacing-3xl;
     margin-bottom: $spacing-xl;
     width: 100%;
-    
+
     @include mobile {
-      flex-direction: column !important;
       gap: $spacing-2xl;
       padding: $spacing-2xl;
+    }
+
+    // DASS Results Section
+    .dass-results {
+      .results-section-title {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $dark-green;
+        text-align: center;
+        margin-bottom: $spacing-xl;
+        text-shadow: 0 2px 4px rgba($dark-green, 0.1);
+      }
+
+      .dass-metrics {
+        display: flex !important;
+        flex-wrap: wrap;
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+        gap: $spacing-3xl;
+
+        @include mobile {
+          flex-direction: column !important;
+          gap: $spacing-2xl;
+        }
+      }
+    }
+
+    // STAR Results Section
+    .star-results {
+      .results-section-title {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $dark-green;
+        text-align: center;
+        margin-bottom: $spacing-xl;
+        text-shadow: 0 2px 4px rgba($dark-green, 0.1);
+      }
+
+      .star-metrics {
+        display: flex !important;
+        flex-wrap: wrap;
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+        gap: $spacing-3xl;
+        margin-bottom: $spacing-2xl;
+
+        @include mobile {
+          flex-direction: column !important;
+          gap: $spacing-2xl;
+        }
+
+        .star-summary {
+          width: 100%;
+          text-align: center;
+          margin-top: $spacing-lg;
+
+          .star-overall {
+            background: rgba($primary-green, 0.1);
+            border-radius: $border-radius-xl;
+            padding: $spacing-xl;
+            border: 2px solid rgba($primary-green, 0.2);
+            margin: 0 auto;
+            max-width: 300px;
+
+            h4 {
+              font-size: $font-size-lg;
+              font-weight: $font-weight-semibold;
+              color: $dark-green;
+              margin-bottom: $spacing-md;
+            }
+
+            .star-level {
+              font-size: $font-size-3xl;
+              font-weight: $font-weight-bold;
+              color: $primary-green;
+              margin-bottom: $spacing-sm;
+              text-shadow: 0 2px 4px rgba($primary-green, 0.3);
+            }
+
+            .star-percentage {
+              font-size: $font-size-2xl;
+              font-weight: $font-weight-black;
+              color: darken($primary-green, 10%);
+            }
+          }
+        }
+      }
+
+      .star-insights {
+        background: rgba($white, 0.9);
+        border-radius: $border-radius-xl;
+        padding: $spacing-2xl;
+        border: 2px solid rgba($primary-green, 0.2);
+        box-shadow: 0 8px 25px rgba($primary-green, 0.15);
+        margin-top: $spacing-xl;
+
+        h4 {
+          font-size: $font-size-xl;
+          font-weight: $font-weight-bold;
+          color: $dark-green;
+          margin-bottom: $spacing-lg;
+          text-align: center;
+        }
+
+        .insights-list {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-md;
+
+          .insight-item {
+            background: rgba($primary-green, 0.08);
+            padding: $spacing-md $spacing-lg;
+            border-radius: $border-radius-lg;
+            border-left: 4px solid $primary-green;
+            font-size: $font-size-base;
+            line-height: 1.5;
+            color: darken($dark-green, 5%);
+            transition: all 0.3s ease;
+
+            &:hover {
+              background: rgba($primary-green, 0.15);
+              transform: translateX(4px);
+            }
+          }
+        }
+      }
     }
   }
     

@@ -7,6 +7,7 @@ import BlobCursor from './components/blob';
 import CircularProgress from './components/CircularProgress';
 import BookingScreen from './components/BookingScreen';
 import { QUESTIONS, UserAnswer, calculateResults } from './data/questions';
+import { getStarInsights } from './data/star-assessment';
 import { gsap } from 'gsap';
 
 function App() {
@@ -324,23 +325,69 @@ function App() {
           </div>
           
           <div className="results-metrics">
-            <CircularProgress
-              percentage={results.depression.percentage}
-              label="Depression"
-              status={results.depression.status}
-            />
-            
-            <CircularProgress
-              percentage={results.anxiety.percentage}
-              label="Anxiety"
-              status={results.anxiety.status}
-            />
-            
-            <CircularProgress
-              percentage={results.stress.percentage}
-              label="Stress"
-              status={results.stress.status}
-            />
+            {/* DASS-21 Results */}
+            <div className="dass-results">
+              <h3 className="results-section-title">Mental Health Assessment (DASS-21)</h3>
+              <div className="dass-metrics">
+                <CircularProgress
+                  percentage={results.depression.percentage}
+                  label="Depression"
+                  status={results.depression.status}
+                />
+
+                <CircularProgress
+                  percentage={results.anxiety.percentage}
+                  label="Anxiety"
+                  status={results.anxiety.status}
+                />
+
+                <CircularProgress
+                  percentage={results.stress.percentage}
+                  label="Stress"
+                  status={results.stress.status}
+                />
+              </div>
+            </div>
+
+            {/* STAR Results */}
+            {results.starResults && (
+              <div className="star-results">
+                <h3 className="results-section-title">Well-Being Assessment (STAR)</h3>
+                <div className="star-metrics">
+                  <CircularProgress
+                    percentage={results.starResults.inherent.percentage}
+                    label="Inherent Strengths"
+                    status={results.starResults.inherent.level}
+                  />
+
+                  <CircularProgress
+                    percentage={results.starResults.coherent.percentage}
+                    label="Learned Behaviors"
+                    status={results.starResults.coherent.level}
+                  />
+
+                  <div className="star-summary">
+                    <div className="star-overall">
+                      <h4>Overall Well-Being</h4>
+                      <div className="star-level">{results.starResults.overallLevel}</div>
+                      <div className="star-percentage">{Math.round((results.starResults.inherent.percentage + results.starResults.coherent.percentage) / 2)}%</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* STAR Insights */}
+                <div className="star-insights">
+                  <h4>💡 Well-Being Insights</h4>
+                  <div className="insights-list">
+                    {getStarInsights(results.starResults).map((insight: string, index: number) => (
+                      <div key={index} className="insight-item">
+                        {insight}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="results-actions">
