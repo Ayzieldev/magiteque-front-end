@@ -7,11 +7,14 @@ import BlobCursor from './components/blob';
 import CircularProgress from './components/CircularProgress';
 import BookingScreen from './components/BookingScreen';
 import { QUESTIONS, UserAnswer, calculateResults } from './data/questions';
+import { gsap } from 'gsap';
 
 function App() {
   const [showAssessment, setShowAssessment] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showBooking, setShowBooking] = useState(false);
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  const [newLevel, setNewLevel] = useState(1);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
@@ -23,6 +26,50 @@ function App() {
   const currentQuestion = QUESTIONS[currentQuestionIndex];
   const totalQuestions = QUESTIONS.length;
   const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+
+  // Level up animation function
+  const triggerLevelUpAnimation = (level: number) => {
+    setNewLevel(level);
+    setShowLevelUp(true);
+
+    // Play celebration sound if available
+    ensureStarted();
+
+    // GSAP animation sequence
+    const tl = gsap.timeline();
+
+    // Animate level up overlay
+    tl.fromTo('.level-up-overlay',
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)' }
+    )
+    .fromTo('.level-up-content',
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' },
+      '-=0.3'
+    )
+    .fromTo('.level-number-celebration',
+      { scale: 0.5, rotation: -180 },
+      { scale: 1, rotation: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' },
+      '-=0.2'
+    )
+    .fromTo('.celebration-particles',
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out' },
+      '-=0.4'
+    );
+
+    // Auto-hide after animation
+    setTimeout(() => {
+      gsap.to('.level-up-overlay', {
+        scale: 0,
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => setShowLevelUp(false)
+      });
+    }, 2500);
+  };
 
   const handleStartAssessment = () => {
     ensureStarted();
@@ -46,7 +93,7 @@ function App() {
     // Save the answer
     const newAnswer: UserAnswer = {
       questionId: currentQuestion.id,
-      selectedOption: selectedAnswer as 'never' | 'sometimes' | 'often' | 'almost_always',
+      selectedOption: selectedAnswer as '1' | '2' | '3' | '4',
       score: currentQuestion.options[selectedAnswer as keyof typeof currentQuestion.options].score
     };
 
@@ -85,7 +132,8 @@ function App() {
     const nextQuestion = QUESTIONS[nextIndex];
     if (nextQuestion && nextQuestion.level > currentLevel) {
       setCurrentLevel(nextQuestion.level);
-      // TODO: Show level up animation
+      // Trigger level up animation
+      triggerLevelUpAnimation(nextQuestion.level);
     }
     
     setSelectedAnswer('');
@@ -330,7 +378,7 @@ function App() {
   if (showBooking) {
     return (
       <>
-        <BookingScreen 
+        <BookingScreen
           onBack={handleBookingBack}
           onBookingComplete={handleBookingComplete}
           onEmailTrigger={handleEmailTrigger}
@@ -339,6 +387,26 @@ function App() {
       </>
     );
   }
+
+  // Level up celebration overlay
+  const levelUpOverlay = showLevelUp && (
+    <div className="level-up-overlay">
+      <div className="level-up-content">
+        <div className="celebration-particles">
+          <div className="particle particle-1">🎉</div>
+          <div className="particle particle-2">⭐</div>
+          <div className="particle particle-3">🌟</div>
+          <div className="particle particle-4">✨</div>
+          <div className="particle particle-5">🏆</div>
+        </div>
+        <div className="level-up-message">
+          <h2>LEVEL UP!</h2>
+          <div className="level-number-celebration">{newLevel}</div>
+          <p>Congratulations! You've reached Level {newLevel}</p>
+        </div>
+      </div>
+    </div>
+  );
 
   if (!showAssessment) {
     return (
@@ -368,104 +436,137 @@ function App() {
   }
 
   return (
-    <div className="App assessment-screen">
-      {/* Progress Bar at top of screen */}
-      <div className="progress-header">
-        <div className="level-badge">
-          <span className="level-number">{currentLevel}</span>
-          <span className="level-text">Level</span>
-        </div>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-        </div>
-      </div>
-
-      <main className="app-main">
-        <div className="assessment-container">
-          <div className="question-card">
-            <div className="question-header">
-              <div className="level-indicator">
-                Level {currentLevel}
-              </div>
-              <h2 className="question-text">
-                {currentQuestion?.text}
-              </h2>
-            </div>
-            
-            <div className="decorative-clouds">
-              <div className="cloud-shape"></div>
-              <div className="cloud-shape"></div>
-              <div className="cloud-shape"></div>
-            </div>
-            
-            <div className="question-options">
-              <label 
-                className={`question-option ${selectedAnswer === 'never' ? 'selected' : ''}`}
-              >
-                <input 
-                  type="radio" 
-                  name={`question${currentQuestion?.id}`} 
-                  value="never" 
-                  checked={selectedAnswer === 'never'}
-                  onChange={() => handleAnswerSelect('never')}
-                />
-                <span className="option-text">{currentQuestion?.options.never.text}</span>
-              </label>
-              <label 
-                className={`question-option ${selectedAnswer === 'sometimes' ? 'selected' : ''}`}
-              >
-                <input 
-                  type="radio" 
-                  name={`question${currentQuestion?.id}`} 
-                  value="sometimes" 
-                  checked={selectedAnswer === 'sometimes'}
-                  onChange={() => handleAnswerSelect('sometimes')}
-                />
-                <span className="option-text">{currentQuestion?.options.sometimes.text}</span>
-              </label>
-              <label 
-                className={`question-option ${selectedAnswer === 'often' ? 'selected' : ''}`}
-              >
-                <input 
-                  type="radio" 
-                  name={`question${currentQuestion?.id}`} 
-                  value="often" 
-                  checked={selectedAnswer === 'often'}
-                  onChange={() => handleAnswerSelect('often')}
-                />
-                <span className="option-text">{currentQuestion?.options.often.text}</span>
-              </label>
-              <label 
-                className={`question-option ${selectedAnswer === 'almost_always' ? 'selected' : ''}`}
-              >
-                <input 
-                  type="radio" 
-                  name={`question${currentQuestion?.id}`} 
-                  value="almost_always" 
-                  checked={selectedAnswer === 'almost_always'}
-                  onChange={() => handleAnswerSelect('almost_always')}
-                />
-                <span className="option-text">{currentQuestion?.options.almost_always.text}</span>
-              </label>
-            </div>
-              
-            <div className="question-navigation">
-              <button className="nav-button btn-back" onClick={handlePrevQuestion}>
-                Back
-              </button>
-              <button 
-                className="nav-button btn-next" 
-                onClick={handleNextQuestion}
-                disabled={!selectedAnswer}
-              >
-                {currentQuestionIndex >= totalQuestions - 1 ? 'View Results' : 'Next'}
-              </button>
-            </div>
+    <>
+      <div className="App assessment-screen">
+        {/* Progress Bar at top of screen */}
+        <div className="progress-header">
+          <div className="level-badge">
+            <span className="level-number">{currentLevel}</span>
+            <span className="level-text">Level</span>
+          </div>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
           </div>
         </div>
-      </main>
-      <VolumeControl />
-    </div>
+
+        <main className="app-main">
+          <div className="assessment-container">
+            <div className="question-card">
+              <div className="question-header">
+                <div className="level-indicator">
+                  Level {currentLevel}
+                </div>
+                <h2 className="question-text">
+                  {currentQuestion?.text}
+                </h2>
+              </div>
+
+              <div className="decorative-clouds">
+                <div className="cloud-shape"></div>
+                <div className="cloud-shape"></div>
+                <div className="cloud-shape"></div>
+              </div>
+
+              <div className="question-options">
+                <label
+                  className={`question-option ${selectedAnswer === '1' ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`question${currentQuestion?.id}`}
+                    value="1"
+                    checked={selectedAnswer === '1'}
+                    onChange={() => handleAnswerSelect('1')}
+                  />
+                  <div className="option-content">
+                    <div className="stars">
+                      {[...Array(4)].map((_, i) => (
+                        <span key={i} className={`star ${i < 1 ? 'filled' : 'empty'}`}>⭐</span>
+                      ))}
+                    </div>
+                    <span className="option-label">{currentQuestion?.options['1'].label}</span>
+                  </div>
+                </label>
+                <label
+                  className={`question-option ${selectedAnswer === '2' ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`question${currentQuestion?.id}`}
+                    value="2"
+                    checked={selectedAnswer === '2'}
+                    onChange={() => handleAnswerSelect('2')}
+                  />
+                  <div className="option-content">
+                    <div className="stars">
+                      {[...Array(4)].map((_, i) => (
+                        <span key={i} className={`star ${i < 2 ? 'filled' : 'empty'}`}>⭐</span>
+                      ))}
+                    </div>
+                    <span className="option-label">{currentQuestion?.options['2'].label}</span>
+                  </div>
+                </label>
+                <label
+                  className={`question-option ${selectedAnswer === '3' ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`question${currentQuestion?.id}`}
+                    value="3"
+                    checked={selectedAnswer === '3'}
+                    onChange={() => handleAnswerSelect('3')}
+                  />
+                  <div className="option-content">
+                    <div className="stars">
+                      {[...Array(4)].map((_, i) => (
+                        <span key={i} className={`star ${i < 3 ? 'filled' : 'empty'}`}>⭐</span>
+                      ))}
+                    </div>
+                    <span className="option-label">{currentQuestion?.options['3'].label}</span>
+                  </div>
+                </label>
+                <label
+                  className={`question-option ${selectedAnswer === '4' ? 'selected' : ''}`}
+                >
+                  <input
+                    type="radio"
+                    name={`question${currentQuestion?.id}`}
+                    value="4"
+                    checked={selectedAnswer === '4'}
+                    onChange={() => handleAnswerSelect('4')}
+                  />
+                  <div className="option-content">
+                    <div className="stars">
+                      {[...Array(4)].map((_, i) => (
+                        <span key={i} className={`star ${i < 4 ? 'filled' : 'empty'}`}>⭐</span>
+                      ))}
+                    </div>
+                    <span className="option-label">{currentQuestion?.options['4'].label}</span>
+                  </div>
+                </label>
+              </div>
+
+              <div className="question-navigation">
+                <button className="nav-button btn-back" onClick={handlePrevQuestion}>
+                  Back
+                </button>
+                <button
+                  className="nav-button btn-next"
+                  onClick={handleNextQuestion}
+                  disabled={!selectedAnswer}
+                >
+                  {currentQuestionIndex >= totalQuestions - 1 ? 'View Results' : 'Next'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+        <VolumeControl />
+      </div>
+
+      {/* Level up celebration overlay - always on top */}
+      {levelUpOverlay}
+    </>
   );
 }
 

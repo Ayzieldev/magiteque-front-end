@@ -241,22 +241,52 @@
         accent-color: $primary-green;
         pointer-events: none;
       }
-      
-      .option-text {
-        font-size: $font-size-xl;
-        font-weight: $font-weight-black;
-        color: $dark-green;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        pointer-events: none;
+
+      .option-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-sm;
         flex: 1;
+        pointer-events: none;
+      }
+
+      .stars {
+        display: flex;
+        gap: 2px;
+
+        .star {
+          font-size: 1.5rem;
+          transition: all 0.3s ease;
+          filter: grayscale(100%);
+
+          &.filled {
+            filter: none;
+            color: $primary-green;
+            text-shadow: 0 2px 4px rgba($primary-green, 0.3);
+          }
+
+          &.empty {
+            color: rgba($dark-green, 0.2);
+          }
+        }
+      }
+
+      .option-label {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $dark-green;
+        text-align: center;
         line-height: 1.3;
-        
+
         @include mobile {
           font-size: $font-size-base;
-          letter-spacing: 0.5px;
-          line-height: 1.2;
         }
+      }
+
+      // Legacy support - hide old option-text if it exists
+      .option-text {
+        display: none;
       }
       
       &:has(input[type="radio"]:checked),
@@ -265,7 +295,19 @@
         border-color: $primary-green;
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba($primary-green, 0.3);
-        
+
+        .stars .star.filled {
+          color: darken($primary-green, 10%);
+          text-shadow: 0 3px 6px rgba($primary-green, 0.4);
+          transform: scale(1.1);
+        }
+
+        .option-label {
+          color: darken($primary-green, 10%);
+          font-weight: $font-weight-bold;
+        }
+
+        // Legacy support
         .option-text {
           color: darken($primary-green, 10%);
         }
@@ -280,11 +322,11 @@
     position: relative;
     z-index: 2;
     gap: $spacing-md;
-    
+
     @include mobile {
       gap: $spacing-sm;
     }
-    
+
     .nav-button {
       border: none;
       padding: $spacing-md $spacing-2xl;
@@ -295,43 +337,162 @@
       transition: all 0.3s ease;
       text-transform: uppercase;
       letter-spacing: 1px;
-      
+
       @include mobile {
         padding: $spacing-sm $spacing-xl;
         font-size: $font-size-base;
       }
-      
+
       &.btn-next {
         background: $gradient-primary;
         color: $white;
         box-shadow: 0 6px 20px rgba($primary-green, 0.4);
-        
+
         &:hover {
           transform: translateY(-3px);
           box-shadow: 0 10px 25px rgba($primary-green, 0.5);
         }
-        
+
         &:active {
           transform: translateY(-1px);
         }
       }
-      
+
       &.btn-back {
         background: transparent;
         color: $primary-green;
         border: 2px solid $primary-green;
         box-shadow: 0 4px 15px rgba($primary-green, 0.2);
-        
+
         &:hover {
           background: $primary-green;
           color: $white;
           transform: translateY(-2px);
           box-shadow: 0 8px 20px rgba($primary-green, 0.3);
         }
-        
+
         &:active {
           transform: translateY(0);
         }
+      }
+    }
+  }
+}
+
+// Level Up Animation Styles
+.level-up-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(18, 182, 149, 0.9);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: overlayPulse 2s ease-in-out infinite;
+
+  @keyframes overlayPulse {
+    0%, 100% { background: rgba(18, 182, 149, 0.9); }
+    50% { background: rgba(18, 182, 149, 0.95); }
+  }
+}
+
+.level-up-content {
+  text-align: center;
+  color: white;
+  position: relative;
+
+  .celebration-particles {
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+
+    .particle {
+      position: absolute;
+      font-size: 2rem;
+      animation: particleFloat 3s ease-in-out infinite;
+
+      &.particle-1 { top: 0; left: 50%; animation-delay: 0s; }
+      &.particle-2 { top: 20%; left: 20%; animation-delay: 0.5s; }
+      &.particle-3 { top: 60%; left: 80%; animation-delay: 1s; }
+      &.particle-4 { top: 80%; left: 30%; animation-delay: 1.5s; }
+      &.particle-5 { top: 40%; left: 70%; animation-delay: 2s; }
+
+      @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-20px) rotate(90deg); }
+        50% { transform: translateY(-40px) rotate(180deg); }
+        75% { transform: translateY(-20px) rotate(270deg); }
+      }
+    }
+  }
+
+  .level-up-message {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 3rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: $font-weight-bold;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .level-number-celebration {
+      font-size: 4rem;
+      font-weight: $font-weight-black;
+      color: #ffffff;
+      margin: 1.5rem 0;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+      display: inline-block;
+    }
+
+    p {
+      font-size: 1.2rem;
+      font-weight: $font-weight-medium;
+      opacity: 0.9;
+    }
+  }
+}
+
+// Mobile responsiveness for level up
+@media (max-width: 768px) {
+  .level-up-content {
+    .level-up-message {
+      padding: 2rem;
+      margin: 0 1rem;
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .level-number-celebration {
+        font-size: 3rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .celebration-particles {
+      width: 150px;
+      height: 150px;
+      top: -30px;
+      left: -30px;
+
+      .particle {
+        font-size: 1.5rem;
       }
     }
   }

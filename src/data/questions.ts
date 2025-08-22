@@ -7,16 +7,16 @@ export interface Question {
   category: 'Depression' | 'Anxiety' | 'Stress';
   text: string;
   options: {
-    never: { text: string; score: number };
-    sometimes: { text: string; score: number };
-    often: { text: string; score: number };
-    almost_always: { text: string; score: number };
+    '1': { stars: number; label: string; score: number };
+    '2': { stars: number; label: string; score: number };
+    '3': { stars: number; label: string; score: number };
+    '4': { stars: number; label: string; score: number };
   };
 }
 
 export interface UserAnswer {
   questionId: number;
-  selectedOption: 'never' | 'sometimes' | 'often' | 'almost_always';
+  selectedOption: '1' | '2' | '3' | '4';
   score: number;
 }
 
@@ -53,10 +53,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I found it hard to wind down',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 2 - Anxiety
@@ -66,10 +66,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I was aware of dryness of my mouth',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 3 - Depression
@@ -79,10 +79,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: "I couldn't seem to experience any positive feeling at all",
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 4 - Anxiety
@@ -92,10 +92,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I experienced breathing difficulty (e.g., excessively rapid breathing, breathlessness in the absence of physical exertion)',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 5 - Depression
@@ -105,10 +105,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: 'I found it difficult to work up the initiative to do things',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 6 - Stress
@@ -118,10 +118,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I tended to over-react to situations',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 7 - Anxiety
@@ -131,10 +131,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I experienced trembling (e.g., in the hands)',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 8 - Stress
@@ -144,10 +144,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I felt that I was using a lot of nervous energy',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 9 - Anxiety
@@ -157,10 +157,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I was worried about situations in which I might panic and make a fool of myself',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 10 - Depression
@@ -170,10 +170,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: 'I felt that I had nothing to look forward to',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 11 - Stress
@@ -183,10 +183,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I found myself getting agitated',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 12 - Stress
@@ -196,10 +196,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I found it difficult to relax',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 13 - Depression
@@ -209,10 +209,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: 'I felt down-hearted and blue',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 14 - Stress
@@ -222,10 +222,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I was intolerant of anything that kept me from getting on with what I was doing',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 15 - Anxiety
@@ -235,10 +235,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I felt I was close to panic',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 16 - Depression
@@ -248,10 +248,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: 'I was unable to become enthusiastic about anything',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 17 - Depression
@@ -261,10 +261,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: "I felt I wasn't worth much as a person",
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 18 - Stress
@@ -274,10 +274,10 @@ export const QUESTIONS: Question[] = [
     category: 'Stress',
     text: 'I felt that I was rather touchy',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 19 - Anxiety
@@ -287,10 +287,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I was aware of the action of my heart in the absence of physical exertion (e.g., sense of heart rate increase, heart missing a beat)',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 20 - Anxiety
@@ -300,10 +300,10 @@ export const QUESTIONS: Question[] = [
     category: 'Anxiety',
     text: 'I felt scared without any good reason',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   },
   // Question 21 - Depression
@@ -313,10 +313,10 @@ export const QUESTIONS: Question[] = [
     category: 'Depression',
     text: 'I felt that life was meaningless',
     options: {
-      never: { text: 'Did not apply to me at all', score: 0 },
-      sometimes: { text: 'Applied to me to some degree, or some of the time', score: 1 },
-      often: { text: 'Applied to me to a considerable degree, or a good part of time', score: 2 },
-      almost_always: { text: 'Applied to me very much, or most of the time', score: 3 }
+      '1': { stars: 1, label: 'Never', score: 0 },
+      '2': { stars: 2, label: 'Sometimes', score: 1 },
+      '3': { stars: 3, label: 'Often', score: 2 },
+      '4': { stars: 4, label: 'Almost Always', score: 3 }
     }
   }
 ];
